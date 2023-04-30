@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import NextHead from 'next/head';
 import { useRouter } from 'next/router';
+import '@/assets/scss/main.scss';
 
 export default function App({ Component, pageProps }: AppProps) {
   const { asPath } = useRouter();
