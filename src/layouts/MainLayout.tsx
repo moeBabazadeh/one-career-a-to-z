@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Head from '@/components/Head';
 import Loader from '@/components/Loader/Loader';
+import Nav from '@/components/Nav';
 
 interface Props {
   children: React.ReactNode;
@@ -18,6 +19,8 @@ const MainLayout = (props: Props) => {
           <Loader finishLoading={() => setTimeout(() => setIsLoading(false), 300)} />
         ) : (
           <div className="layout-wrapper">
+            <Nav />
+
             <div id="content">{props.children}</div>
           </div>
         )}
