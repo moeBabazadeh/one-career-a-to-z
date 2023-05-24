@@ -4,6 +4,7 @@ import Loader from '@/components/Loader/Loader';
 import Nav from '@/components/Nav';
 import Social from '@/components/Social';
 import Email from '@/components/Email';
+import Footer from '@/components/Footer';
 
 interface Props {
   children: React.ReactNode;
@@ -25,7 +26,11 @@ const MainLayout = (props: Props) => {
             <Social />
             <Email />
 
-            <div id="content">{props.children}</div>
+            <div id="content">
+              {props.children}
+
+              <Footer />
+            </div>
           </div>
         )}
       </div>

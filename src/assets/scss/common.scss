@@ -230,7 +230,7 @@
     display: block;
     width: 100%;
     max-width: 270px;
-    margin: 0 auto 10px;
+    margin: 0 auto 0px;
     color: var(--light-slate);
   }
 
@@ -254,27 +254,7 @@
   color: var(--light-slate);
   font-family: var(--font-mono);
   font-size: var(--fz-xxs);
-  line-height: 1;
-
-  a {
-    padding: 10px;
-  }
-
-  .github-stats {
-    margin-top: 10px;
-
-    & > span {
-      display: inline-flex;
-      align-items: center;
-      margin: 0 7px;
-    }
-    svg {
-      display: inline-block;
-      margin-right: 5px;
-      width: 14px;
-      height: 14px;
-    }
-  }
+  line-height: 1.5;
 }
 
 .menu {
