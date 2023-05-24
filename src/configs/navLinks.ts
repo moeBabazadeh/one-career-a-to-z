@@ -1,11 +1,11 @@
 import { createRef } from 'react';
 
 export const navLinks = [
-  {
-    name: 'About',
-    url: '/#about',
-    nodeRef: createRef<HTMLLIElement>(),
-  },
+  // {
+  //   name: 'About',
+  //   url: '/#about',
+  //   nodeRef: createRef<HTMLLIElement>(),
+  // },
   // {
   //   name: 'Experience',
   //   url: '/#jobs',
@@ -16,9 +16,9 @@ export const navLinks = [
   //   url: '/#projects',
   //   nodeRef: createRef<HTMLLIElement>(),
   // },
-  {
-    name: 'Contact',
-    url: '/#contact',
-    nodeRef: createRef<HTMLLIElement>(),
-  },
+  // {
+  //   name: 'Contact',
+  //   url: '/#contact',
+  //   nodeRef: createRef<HTMLLIElement>(),
+  // },
 ];
