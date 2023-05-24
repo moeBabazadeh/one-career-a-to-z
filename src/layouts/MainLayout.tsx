@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Head from '@/components/Head';
 import Loader from '@/components/Loader/Loader';
 import Nav from '@/components/Nav';
+import Social from '@/components/Social';
 
 interface Props {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ const MainLayout = (props: Props) => {
         ) : (
           <div className="layout-wrapper">
             <Nav />
+            <Social />
 
             <div id="content">{props.children}</div>
           </div>
