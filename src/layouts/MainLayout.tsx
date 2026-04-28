@@ -26,7 +26,7 @@ const MainLayout = (props: Props) => {
             <Social />
             <Email />
 
-            <div id="content">
+            <div id="content" style={{ marginTop: 150 }}>
               {props.children}
 
               <Footer />
