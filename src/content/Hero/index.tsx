@@ -20,10 +20,11 @@ const Hero = [
   {
     text: (
       <p>
-        I’m a Chief Full Stack Engineer with over 10 years of experience building scalable,
-        high-performance systems across startups and international teams. My work focuses on
-        designing intelligent platforms that combine modern web technologies, cloud infrastructure,
-        workflow automation, and AI-driven insights to solve complex operational challenges.
+        I’m a Chief Full Stack Engineer with over 10 years behind me, most of it at early-stage and
+        growth startups where what I built had to hold up under real production load. I work mainly
+        in TypeScript, Python, React, Next.js, and Laravel, and I’m at home across cloud, DevOps, and
+        performance work. I like owning the architecture and setting how a team builds, while keeping
+        the engineering pointed at what the business actually needs.
       </p>
     ),
     nodeRef: createRef<HTMLDivElement>(),
@@ -31,17 +32,19 @@ const Hero = [
   {
     text: (
       <p>
-        Currently, I lead engineering initiatives at{' '}
+        Currently, I lead engineering at{' '}
         <a href="https://neuroject.com/" target="_blank" rel="noreferrer">
           Neuroject
         </a>
-        , where I work on AI-enabled construction and project management solutions using{' '}
+        , where I architect and build NeuroBuild — an AI platform that turns scattered construction
+        project data into predictions and automated workflows, owned from the data model up to the
+        interface. A lot of my recent work has been making AI genuinely useful inside the product:
+        wiring{' '}
         <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
           Next.js
-        </a>
-        , Laravel, AWS, and modern DevOps practices. My role spans full system architecture,
-        workflow optimization, cloud infrastructure, and leading development teams from concept to
-        production.
+        </a>{' '}
+        and Laravel together with language models and automation, hosted on AWS Amplify and Laravel
+        Vapor, so people get decisions they can actually trust.
       </p>
     ),
     nodeRef: createRef<HTMLDivElement>(),
@@ -49,12 +52,13 @@ const Hero = [
   {
     text: (
       <p>
-        Previously, I helped build and scale digital products at{' '}
+        Previously, I led the frontend at{' '}
         <a href="https://0and1.co.uk/" target="_blank" rel="noreferrer">
           0&1
         </a>
-        , contributing to the development of an advanced LMS and exam monitoring platform, including
-        secure identity verification systems powered by AI technologies.
+        , building an integrated LMS and exam-monitoring platform — including face-based identity
+        checks during live exams using the Microsoft Azure Face API, which tightened up security and
+        helped on the compliance side.
       </p>
     ),
     nodeRef: createRef<HTMLDivElement>(),
@@ -63,17 +67,8 @@ const Hero = [
     text: (
       <p>
         I enjoy working at the intersection of software architecture, AI integration, and product
-        engineering — transforming complex workflows into intuitive, scalable, and data-driven
+        engineering — turning messy, complex workflows into intuitive, scalable, and data-driven
         systems.
-      </p>
-    ),
-    nodeRef: createRef<HTMLDivElement>(),
-  },
-  {
-    text: (
-      <p>
-        Outside of work, I explore embedded systems, real-time technologies, and emerging tools that
-        push the boundaries of modern software engineering.
       </p>
     ),
     nodeRef: createRef<HTMLDivElement>(),

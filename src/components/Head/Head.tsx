@@ -12,8 +12,8 @@ const Head: React.FunctionComponent<Props> = (props: Props) => {
   const {
     children,
     title = 'Mohammad Babazadeh',
-    description = "Explore Mohammad Babazadeh's personal website, showcasing his skills as a Frontend Developer experienced in React, Next.js, and embedded design. Learn about his professional journey and get in touch for your next project.",
-    keywords = 'Mohammad Babazadeh, personal website, frontend developer, React, Next.js, embedded design, web development, professional experience, portfolio, TypeScript, JavaScript, HTML, SCSS, Gatsby, Tailwind CSS, Material UI, Redux, CI/CD, remote work, IoT',
+    description = "Explore Mohammad Babazadeh's personal website — a Chief Full Stack Engineer with 10+ years building scalable, AI-driven platforms with TypeScript, Python, React, Next.js, and Laravel. Learn about his professional journey and get in touch for your next project.",
+    keywords = 'Mohammad Babazadeh, personal website, chief full stack engineer, full stack developer, AI engineering, LLM integration, RAG, React, Next.js, Laravel, TypeScript, Python, Node.js, AWS, cloud, DevOps, software architecture, professional experience, portfolio, remote work',
   } = props;
 
   return (
