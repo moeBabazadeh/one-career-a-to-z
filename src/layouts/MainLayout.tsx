@@ -8,14 +8,17 @@ import Footer from '@/components/Footer';
 
 interface Props {
   children: React.ReactNode;
+  // The intro loader only plays on the home page.
+  isHome?: boolean;
+  title?: string;
 }
 
-const MainLayout = (props: Props) => {
-  const [isLoading, setIsLoading] = useState(true);
+const MainLayout = ({ isHome = true, title, ...props }: Props) => {
+  const [isLoading, setIsLoading] = useState(isHome);
 
   return (
     <>
-      <Head />
+      <Head title={title} />
 
       <div id="root">
         {isLoading ? (
