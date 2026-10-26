@@ -1,8 +1,7 @@
-@import 'fonts';
-@import 'mixins';
-@import 'global';
-@import 'prism';
-@import 'transition';
-@import 'variables';
-@import 'loader';
-@import 'common';
+@use 'fonts';
+@use 'global';
+@use 'prism';
+@use 'transition';
+@use 'variables';
+@use 'loader';
+@use 'common';
