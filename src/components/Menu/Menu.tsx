@@ -5,85 +5,59 @@ import { KEY_CODES } from '@/configs/constants';
 import { useOnClickOutside } from '@/hooks';
 
 const Menu = () => {
-  const wrapperRef = useRef(null);
-  const buttonRef = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   useOnClickOutside(wrapperRef, () => setMenuOpen(false));
 
-  let menuFocusAbles: HTMLElement[];
-  let firstFocusableEl: HTMLElement;
-  let lastFocusableEl: HTMLElement;
-
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const setFocusables = () => {
-    if (!buttonRef.current || !navRef.current) return;
-
-    menuFocusAbles = [buttonRef.current, ...Array.from(navRef.current.querySelectorAll('a'))];
-    firstFocusableEl = menuFocusAbles[0];
-    lastFocusableEl = menuFocusAbles[menuFocusAbles.length - 1];
-  };
-
-  const handleBackwardTab = (e: KeyboardEvent) => {
-    if (document.activeElement === firstFocusableEl) {
-      e.preventDefault();
-      lastFocusableEl.focus();
-    }
-  };
-
-  const handleForwardTab = (e: KeyboardEvent) => {
-    if (document.activeElement === lastFocusableEl) {
-      e.preventDefault();
-      firstFocusableEl.focus();
-    }
-  };
-
-  const onKeyDown = (e: KeyboardEvent) => {
-    switch (e.key) {
-      case KEY_CODES.ESCAPE:
-      case KEY_CODES.ESCAPE_IE11: {
-        setMenuOpen(false);
-        break;
-      }
-
-      case KEY_CODES.TAB: {
-        if (menuFocusAbles && menuFocusAbles.length === 1) {
-          e.preventDefault();
-          break;
-        }
-        if (e.shiftKey) {
-          handleBackwardTab(e);
-        } else {
-          handleForwardTab(e);
-        }
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-  };
-
-  const onResize = (e: UIEvent) => {
-    if (window.innerWidth > 768) {
-      setMenuOpen(false);
-    }
-  };
-
   useEffect(() => {
+    // Keep Tab cycling between the menu button and the menu's links.
+    const trapFocus = (e: KeyboardEvent) => {
+      if (!buttonRef.current || !navRef.current) return;
+
+      const focusables = [buttonRef.current, ...Array.from(navRef.current.querySelectorAll('a'))];
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (focusables.length === 1) {
+        e.preventDefault();
+      } else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case KEY_CODES.ESCAPE:
+        case KEY_CODES.ESCAPE_IE11:
+          setMenuOpen(false);
+          break;
+        case KEY_CODES.TAB:
+          trapFocus(e);
+          break;
+      }
+    };
+
+    const onResize = () => {
+      if (window.innerWidth > 768) {
+        setMenuOpen(false);
+      }
+    };
+
     window.addEventListener('keydown', onKeyDown);
     window.addEventListener('resize', onResize);
-
-    setFocusables();
 
     return () => {
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('resize', onResize);
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

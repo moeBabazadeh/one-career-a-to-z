@@ -19,12 +19,12 @@ const Footer = () => {
 
       <div className="credit" tabIndex={-1}>
         <div>
-          <a href="https://github.com/admir4l/my-personal-website">
-            Rebuilt by Mohammad Babazadeh using Next.js
+          <a href="https://brittanychiang.com" target="_blank" rel="noreferrer">
+            Designed by Brittany Chiang
           </a>
           <br />
-          <a href="https://github.com/bchiang7/v4">
-            code forked from Brittany Chiang&apos;s repository
+          <a href="https://github.com/bchiang7/v4" target="_blank" rel="noreferrer">
+            Rebuilt by Mohammad Babazadeh with Next.js from her v4 source
           </a>
         </div>
       </div>

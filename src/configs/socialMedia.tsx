@@ -1,6 +1,6 @@
 import IconGitHub from '@/assets/icons/github';
 // import IconInstagram from '@/assets/icons/instagram';
-import IconTwitter from '@/assets/icons/twitter';
+// import IconTwitter from '@/assets/icons/twitter';
 import IconLinkedin from '@/assets/icons/linkedin';
 // import IconCodepen from '@/assets/icons/codepen';
 

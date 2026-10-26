@@ -11,6 +11,8 @@ const useScrollDirection = (
   const [scrollDir, setScrollDir] = useState(initialDirection);
 
   useEffect(() => {
+    if (off) return;
+
     const threshold = thresholdPixels || 0;
     let lastScrollY = window.pageYOffset;
     let ticking = false;
@@ -36,16 +38,13 @@ const useScrollDirection = (
       }
     };
 
-    /**
-     * Bind the scroll handler if `off` is set to false.
-     * If `off` is set to true reset the scroll direction.
-     */
-    !off ? window.addEventListener('scroll', onScroll) : setScrollDir(initialDirection);
+    window.addEventListener('scroll', onScroll);
 
     return () => window.removeEventListener('scroll', onScroll);
-  }, [initialDirection, thresholdPixels, off]);
+  }, [thresholdPixels, off]);
 
-  return scrollDir;
+  // While `off`, report the initial direction instead of tracking scroll.
+  return off ? initialDirection : scrollDir;
 };
 
 export default useScrollDirection;

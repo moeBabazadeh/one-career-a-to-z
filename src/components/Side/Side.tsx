@@ -15,8 +15,6 @@ const Side = ({ children, orientation }: Props) => {
     const timeout = setTimeout(() => setIsMounted(true), loaderDelay);
 
     return () => clearTimeout(timeout);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
