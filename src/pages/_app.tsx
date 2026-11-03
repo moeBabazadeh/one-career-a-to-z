@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import NextHead from 'next/head';
 import { useRouter } from 'next/router';
+import { person } from '@/content/db';
 import '@/assets/scss/main.scss';
 
 // Self-hosted at build time by next/font. They stand in for the original theme's fonts, which
@@ -9,6 +10,9 @@ import '@/assets/scss/main.scss';
 const sans = Inter({ subsets: ['latin'], weight: ['400', '500', '600'], display: 'swap' });
 const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500'], display: 'swap' });
 const fonts = `html:root{--font-sans:${sans.style.fontFamily},-apple-system,system-ui,sans-serif;--font-mono:${mono.style.fontFamily},ui-monospace,Menlo,monospace}`;
+
+/** The site's address for share links: the facts file, unless an environment overrides it. */
+const SITE = process.env.NEXT_PUBLIC_URL ?? person.url;
 
 export default function App({ Component, pageProps }: AppProps) {
   const { asPath } = useRouter();
@@ -27,14 +31,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
         <meta property="og:locale" content="en_GB" />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Mohammad Babazadeh" />
-        <meta property="og:url" content={`${process.env.NEXT_PUBLIC_URL}${asPath}`} />
+        <meta property="og:site_name" content={person.name} />
+        <meta property="og:url" content={`${SITE}${asPath}`} />
         <meta property="og:image:width" content="300" />
         <meta property="og:image:height" content="300" />
-        <meta
-          property="og:image"
-          content={process.env.NEXT_PUBLIC_URL + '/assets/icons/og-300x300.png'}
-        />
+        <meta property="og:image" content={`${SITE}/assets/icons/og-300x300.png`} />
         <meta property="og:ttl" content="604800" />
         <meta name="twitter:card" content="summary_large_image" />
 
