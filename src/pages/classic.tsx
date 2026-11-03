@@ -6,7 +6,7 @@ import Featured from '@/components/Featured';
 import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
 
-export default function Home() {
+export default function Classic() {
   return (
     <MainLayout>
       <main className="fillHeight" style={{ counterReset: 'section' }}>
