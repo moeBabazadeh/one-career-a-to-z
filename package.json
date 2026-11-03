@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "format": "prettier .  --write"
+    "typecheck": "next typegen && tsc --noEmit",
+    "format": "prettier . --write"
   },
   "dependencies": {
     "next": "16.4.3",
