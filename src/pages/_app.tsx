@@ -1,7 +1,14 @@
 import type { AppProps } from 'next/app';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import NextHead from 'next/head';
 import { useRouter } from 'next/router';
 import '@/assets/scss/main.scss';
+
+// Self-hosted at build time by next/font. They stand in for the original theme's fonts, which
+// can't be redistributed.
+const sans = Inter({ subsets: ['latin'], weight: ['400', '500', '600'], display: 'swap' });
+const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500'], display: 'swap' });
+const fonts = `html:root{--font-sans:${sans.style.fontFamily},-apple-system,system-ui,sans-serif;--font-mono:${mono.style.fontFamily},ui-monospace,Menlo,monospace}`;
 
 export default function App({ Component, pageProps }: AppProps) {
   const { asPath } = useRouter();
@@ -10,6 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <NextHead>
         <meta charSet="utf-8" />
+        <style>{fonts}</style>
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="index, follow" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
