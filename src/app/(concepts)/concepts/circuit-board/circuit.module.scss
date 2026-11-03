@@ -1,0 +1,989 @@
+// Concept C · Circuit Board. Layout: a matte black PCB (white in the light scheme); each section is a zone with a reference designator.
+// Dark by default; light is the same board in white solder mask, following the system or the toggle
+// (see _shared/_scheme.scss). The parts keep their own colours on either board: black IC packages,
+// green module boards, a red LED, gold pads.
+@use '../_shared/scheme';
+
+// Silkscreen and gold lettering on black: the dark board, and the markings on black parts.
+@mixin black-ink {
+  --silk: #e8ebe4;
+  --silk-2: rgba(232, 235, 228, 0.66);
+  --silk-3: rgba(232, 235, 228, 0.2);
+  --gold-text: #e0b95f;
+  --gold-link: #f6dc8f;
+}
+
+@mixin white-mask {
+  --mask: #f4f3ee;
+  --mask-2: #fbfaf7;
+  --mask-3: #ebe9e2;
+  --copper: #b07f2c;
+  --gold: #d2a443;
+  --gold-hi: #ebc160;
+  --silk: #161a17;
+  --silk-2: rgba(22, 26, 23, 0.72);
+  --silk-3: rgba(22, 26, 23, 0.18);
+  --gold-text: #85600f;
+  --gold-link: #7a5208;
+  --grain: rgba(0, 0, 0, 0.045);
+  --top-bg: rgba(244, 243, 238, 0.92);
+  --hot-ink: #b3261e;
+  --drop: rgba(60, 50, 30, 0.22);
+  --drop-deep: rgba(60, 50, 30, 0.3);
+}
+
+.root {
+  --mask: #101311;
+  --mask-2: #161b18;
+  --mask-3: #1d231f;
+  --copper: #b98d3f;
+  --gold: #e0b95f;
+  --gold-hi: #f6dc8f;
+  @include black-ink;
+  --led: #ff4d3a;
+  // Laser marking on the black parts, the same on either board.
+  --marking: #e8ebe4;
+  --marking-2: rgba(232, 235, 228, 0.66);
+  --grain: rgba(255, 255, 255, 0.035);
+  --top-bg: rgba(16, 19, 17, 0.92);
+  --hot-ink: #ffb4aa;
+  --drop: rgba(0, 0, 0, 0.8);
+  --drop-deep: rgba(0, 0, 0, 0.9);
+
+  @include scheme.light {
+    @include white-mask;
+  }
+  --silk-font: var(--font-azeret), ui-monospace, Menlo, monospace;
+  --display: var(--font-rh-display), 'Helvetica Neue', Arial, sans-serif;
+  --body: var(--font-rh-text), 'Helvetica Neue', Arial, sans-serif;
+
+  min-height: 100vh;
+  background-color: var(--mask);
+  background-image: radial-gradient(circle at 1px 1px, var(--grain) 1px, transparent 0);
+  background-size: 4px 4px;
+  color: var(--silk);
+  font: 16px/1.6 var(--body);
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--gold-link);
+    outline-offset: 2px;
+  }
+}
+
+:global(body):has(.root) {
+  background: #101311;
+
+  @include scheme.light {
+    background: #f4f3ee;
+  }
+}
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: 58px;
+  padding: 0 max(16px, 2.5vw);
+  border-bottom: 1px solid var(--silk-3);
+  background: var(--top-bg);
+  backdrop-filter: blur(6px);
+  font: 500 12px var(--silk-font);
+
+  nav {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+
+    a {
+      text-decoration: none;
+      white-space: nowrap;
+
+      &:hover {
+        color: var(--gold-link);
+      }
+    }
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.mark {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--mask) 0 3px, var(--gold) 3.5px 8px);
+}
+
+/* ---------- hero ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 470px) minmax(0, 660px);
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 48px max(16px, 3vw) 72px;
+
+  @media (max-width: 1000px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.heroText {
+  min-width: 0;
+
+  h1 {
+    margin: 12px 0 8px;
+    font: 900 clamp(48px, 7vw, 84px) / 0.95 var(--display);
+    letter-spacing: -0.03em;
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--gold-text);
+  font: 500 12px var(--silk-font);
+  letter-spacing: 0.1em;
+}
+
+.role {
+  margin: 0;
+  font: 500 22px var(--display);
+
+  a {
+    color: var(--gold-link);
+    text-underline-offset: 4px;
+  }
+}
+
+.lede {
+  max-width: 44ch;
+  margin: 16px 0 0;
+  color: var(--silk-2);
+  font-size: 18px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.pad {
+  padding: 12px 18px;
+  border: 2px solid var(--gold);
+  border-radius: 3px;
+  color: var(--gold-link) !important;
+  font: 700 12px var(--silk-font);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &:hover {
+    background: rgba(224, 185, 95, 0.12);
+  }
+}
+
+.padSolid {
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold));
+  color: #1a1408 !important;
+
+  &:hover {
+    background: var(--gold-hi);
+  }
+}
+
+.bom {
+  width: 100%;
+  margin-top: 32px;
+  border-collapse: collapse;
+  font: 13px var(--silk-font);
+
+  caption {
+    margin-bottom: 8px;
+    color: var(--silk-2);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-align: left;
+  }
+
+  th,
+  td {
+    padding: 6px 10px 6px 0;
+    border-top: 1px dashed var(--silk-3);
+    text-align: left;
+  }
+
+  th {
+    width: 70px;
+    color: var(--gold-text);
+    font-weight: 500;
+  }
+
+  td {
+    color: var(--silk-2);
+  }
+}
+
+.bomValue {
+  width: 80px;
+  color: var(--silk) !important;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- board svg ---------- */
+.board {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  background: var(--mask-2);
+  box-shadow:
+    inset 0 0 0 1px var(--silk-3),
+    0 30px 60px -30px var(--drop);
+}
+
+.trace {
+  fill: none;
+  stroke: var(--copper);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.9;
+}
+
+.padRing {
+  fill: var(--gold);
+}
+
+.hole {
+  fill: #050605;
+}
+
+.pin rect,
+.padRect {
+  fill: var(--gold);
+}
+
+.chip {
+  fill: #1a1e1c;
+  stroke: #2a302c;
+  stroke-width: 1.5;
+}
+
+.pinOne {
+  fill: #2c332f;
+}
+
+.chipName {
+  fill: var(--marking);
+  font: 700 15px var(--silk-font);
+  letter-spacing: 0.04em;
+}
+
+.chipSub {
+  fill: var(--gold-hi);
+  font: 500 11px var(--silk-font);
+  letter-spacing: 0.08em;
+}
+
+.chipCode {
+  fill: var(--marking-2);
+  font: 9px var(--silk-font);
+}
+
+.partMark {
+  fill: var(--marking-2);
+  font: 600 9px var(--silk-font);
+}
+
+.silk {
+  fill: var(--silk);
+  font: 500 11px var(--silk-font);
+}
+
+.silkDim {
+  fill: var(--silk-2);
+  font: 9.5px var(--silk-font);
+  letter-spacing: 0.08em;
+}
+
+.resistor {
+  fill: #121212;
+}
+
+.resMark {
+  fill: var(--marking);
+  font: 600 8px var(--silk-font);
+}
+
+.capacitor {
+  fill: #b59a74;
+}
+
+.crystal {
+  fill: #c7ccd1;
+  stroke: #8d949b;
+}
+
+.crystal + .resMark {
+  fill: #303438;
+}
+
+.led {
+  fill: var(--led);
+  filter: drop-shadow(0 0 6px var(--led));
+  animation: led 1.8s ease-in-out infinite;
+}
+
+@keyframes led {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.pulse {
+  fill: var(--gold-hi);
+}
+
+/* ---------- zones ---------- */
+.zone {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 64px max(16px, 3vw) 80px;
+  scroll-margin-top: 58px;
+}
+
+.zoneHead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+
+  // a trace running out to the right edge
+  &::after {
+    content: '';
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--copper);
+    opacity: 0.8;
+  }
+
+  h2 {
+    margin: 0;
+    font: 900 clamp(30px, 4vw, 46px) / 1 var(--display);
+    letter-spacing: -0.02em;
+  }
+}
+
+.via {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #050605 0 4px, var(--gold) 4.5px 9px);
+}
+
+.refDes {
+  padding: 3px 8px;
+  border: 1px solid var(--silk-2);
+  color: var(--silk);
+  font: 500 12px var(--silk-font);
+}
+
+.zoneLede {
+  max-width: 64ch;
+  margin: -12px 0 28px;
+  color: var(--silk-2);
+}
+
+.prose {
+  max-width: 64ch;
+
+  p {
+    margin: 0 0 16px;
+    color: var(--silk-2);
+    font-size: 17px;
+  }
+}
+
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+  margin-bottom: 32px;
+
+  @media (max-width: 860px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.camera {
+  position: relative;
+  margin: 0;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--mask-3);
+  box-shadow: inset 0 0 0 1px var(--silk-3);
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    border: 6px solid #0a0b0a;
+    box-shadow: 0 0 0 3px var(--gold);
+    filter: grayscale(1) sepia(0.35) contrast(1.05);
+    transition: filter 0.3s;
+  }
+
+  &:hover img {
+    filter: none;
+  }
+
+  figcaption {
+    margin-top: 10px;
+    color: var(--silk-2);
+    font: 500 11px var(--silk-font);
+    text-align: center;
+  }
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.parts {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font: 13px var(--silk-font);
+
+  th {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--silk-2);
+    color: var(--silk-2);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px dashed var(--silk-3);
+  }
+
+  td:first-child {
+    color: var(--gold-text);
+  }
+}
+
+/* experience: a pin header */
+.header {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    display: grid;
+    grid-template-columns: 34px 36px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  @media (max-width: 640px) {
+    > li {
+      grid-template-columns: 30px 14px minmax(0, 1fr);
+    }
+  }
+}
+
+.pinPad {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background:
+    radial-gradient(circle, #050605 0 6px, transparent 6.5px),
+    linear-gradient(180deg, var(--gold-hi), var(--gold));
+  color: transparent;
+  font-size: 0;
+
+  @media (max-width: 640px) {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.pinTrace {
+  height: 3px;
+  margin-top: 26px;
+  background: var(--copper);
+}
+
+.slot {
+  padding: 16px 18px;
+  border: 1px solid var(--silk-3);
+  border-radius: 8px;
+  background: var(--mask-2);
+
+  h3 {
+    margin: 0;
+    font: 700 19px/1.3 var(--display);
+  }
+
+  ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    color: var(--silk-2);
+    font-size: 15px;
+  }
+}
+
+.slotRange {
+  margin: 0 0 4px;
+  color: var(--gold-text);
+  font: 500 12px var(--silk-font);
+}
+
+.subhead {
+  margin: 48px 0 16px;
+  color: var(--silk-2);
+  font: 500 12px var(--silk-font);
+  letter-spacing: 0.1em;
+}
+
+.roots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    gap: 2px;
+    padding-left: 12px;
+    border-left: 3px solid var(--copper);
+  }
+
+  span {
+    color: var(--gold-text);
+    font: 12px var(--silk-font);
+  }
+
+  small {
+    color: var(--silk-2);
+    font-size: 13px;
+  }
+}
+
+/* platforms: IC packages */
+.ics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 36px 28px;
+}
+
+.ic {
+  position: relative;
+  padding: 0 14px;
+
+  // gull-wing pins down both sides
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 46px;
+    bottom: 22px;
+    width: 14px;
+    background: repeating-linear-gradient(180deg, var(--gold) 0 7px, transparent 7px 18px);
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
+}
+
+.icRef {
+  display: block;
+  margin-bottom: 6px;
+  font: 500 12px var(--silk-font);
+}
+
+.icBody {
+  @include black-ink;
+
+  position: relative;
+  height: calc(100% - 26px);
+  padding: 16px 18px 18px;
+  border-radius: 6px;
+  background: linear-gradient(160deg, #1f2421, #151816);
+  color: var(--silk);
+  box-shadow:
+    inset 0 0 0 1px #2c332f,
+    0 18px 30px -18px var(--drop-deep);
+
+  // pin-1 notch
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    width: 22px;
+    height: 11px;
+    margin-left: -11px;
+    border-radius: 0 0 11px 11px;
+    background: var(--mask);
+  }
+
+  h3 {
+    margin: 14px 0 6px;
+    font: 900 24px var(--display);
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin: 0 0 12px;
+    color: var(--silk-2);
+    font-size: 15px;
+  }
+}
+
+.die {
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #2c332f;
+
+  img {
+    width: 100%;
+    height: auto;
+    filter: grayscale(1) sepia(0.55) brightness(0.8) contrast(1.15);
+    transition: filter 0.3s;
+  }
+
+  &:hover img {
+    filter: none;
+  }
+}
+
+.marking {
+  color: var(--gold-text) !important;
+  font: 500 12px var(--silk-font) !important;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font: 700 12.5px var(--silk-font);
+
+  a {
+    color: var(--gold-link);
+    text-underline-offset: 3px;
+  }
+}
+
+.passives {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+    padding: 14px 16px;
+    border: 1px solid var(--silk-3);
+    border-radius: 8px;
+  }
+
+  b {
+    font: 700 16px var(--display);
+  }
+
+  p {
+    margin: 0;
+    color: var(--silk-2);
+    font-size: 14px;
+  }
+}
+
+.passiveRef {
+  color: var(--gold-text);
+  font: 500 11px var(--silk-font);
+}
+
+/* hardware: castellated modules */
+.modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.module {
+  @include black-ink;
+
+  position: relative;
+  padding: 18px 26px;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 0 18px, var(--mask) 0 7px, var(--gold) 7.5px 9px, transparent 9.5px) 0
+      0 / 100% 26px repeat-y,
+    radial-gradient(
+        circle at 100% 18px,
+        var(--mask) 0 7px,
+        var(--gold) 7.5px 9px,
+        transparent 9.5px
+      )
+      0 0 / 100% 26px repeat-y,
+    linear-gradient(160deg, #1b3226, #142219);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  color: var(--silk);
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font: 500 11px var(--silk-font);
+  }
+
+  h3 {
+    margin: 12px 0 0;
+    font: 900 22px var(--display);
+  }
+
+  p {
+    margin: 0 0 10px;
+    color: var(--silk-2);
+    font-size: 14.5px;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 2px 8px;
+      border: 1px solid var(--silk-3);
+      border-radius: 3px;
+      font: 500 11px var(--silk-font);
+    }
+  }
+}
+
+.moduleStatus {
+  color: #7ee0a1;
+}
+
+.moduleKind {
+  color: var(--gold-link) !important;
+  font: 500 12px var(--silk-font) !important;
+}
+
+/* open source: test points */
+.testPoints {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    display: grid;
+    grid-template-columns: 28px 48px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--silk-3);
+    border-radius: 8px;
+    background: var(--mask-2);
+
+    @media (max-width: 720px) {
+      grid-template-columns: 28px minmax(0, 1fr);
+
+      .tpRef {
+        display: none;
+      }
+
+      .reading {
+        grid-column: 2;
+        text-align: left;
+      }
+    }
+  }
+
+  h3 {
+    margin: 0 0 4px;
+    font: 700 17px var(--display);
+  }
+
+  p {
+    margin: 0;
+    color: var(--silk-2);
+    font-size: 14.5px;
+  }
+}
+
+.tp {
+  width: 26px;
+  height: 26px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #050605 0 5px, var(--gold) 5.5px 12px, transparent 12.5px);
+  box-shadow: 0 0 12px rgba(224, 185, 95, 0.35);
+}
+
+.tpRef {
+  margin-top: 4px;
+  color: var(--gold-text);
+  font: 500 12px var(--silk-font);
+}
+
+.reading {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  font: 500 12px var(--silk-font);
+  white-space: nowrap;
+
+  b {
+    color: var(--gold-link);
+  }
+
+  span {
+    color: var(--silk-2);
+  }
+}
+
+.kind {
+  padding: 1px 7px;
+  border: 1px solid var(--silk-3);
+  border-radius: 3px;
+  color: var(--silk) !important;
+}
+
+.kindHot {
+  border-color: var(--led);
+  color: var(--hot-ink) !important;
+}
+
+/* contact */
+.contact {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+
+  @media (max-width: 720px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.usb {
+  position: relative;
+  width: 180px;
+  height: 66px;
+  border-radius: 33px;
+  background: linear-gradient(180deg, #d9dde1, #8f969d);
+  box-shadow:
+    inset 0 0 0 5px #6d747a,
+    0 16px 30px -12px var(--drop);
+
+  span {
+    position: absolute;
+    inset: 14px 18px;
+    border-radius: 20px;
+    background: #0a0b0a;
+
+    // the tongue, with its contacts
+    &::after {
+      content: '';
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      top: 50%;
+      height: 14px;
+      margin-top: -7px;
+      border-radius: 3px;
+      background: repeating-linear-gradient(90deg, var(--gold) 0 4px, #242a26 4px 8px);
+    }
+  }
+}
+
+.contactLede {
+  max-width: 34ch;
+  margin: 0 0 14px;
+  font: 900 clamp(24px, 3vw, 36px) / 1.15 var(--display);
+  letter-spacing: -0.02em;
+}
+
+.email {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--gold-link) !important;
+  font: 700 clamp(17px, 2.4vw, 24px) var(--silk-font);
+  text-underline-offset: 6px;
+  word-break: break-all;
+}
+
+// The footer names the solder mask, so it follows the scheme.
+.maskWhite {
+  display: none;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 18px max(16px, 2.5vw) 90px;
+  border-top: 1px solid var(--silk-3);
+  color: var(--silk-2);
+  font: 500 11px var(--silk-font);
+  letter-spacing: 0.08em;
+
+  @include scheme.light {
+    .maskBlack {
+      display: none;
+    }
+
+    .maskWhite {
+      display: inline;
+    }
+  }
+}
