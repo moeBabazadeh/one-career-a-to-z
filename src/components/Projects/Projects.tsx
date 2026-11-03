@@ -13,7 +13,11 @@ const ProjectCard = ({ project, delay }: { project: Project; delay: number }) =>
   const href = primaryLink(links);
 
   return (
-    <li className="projects-project reveal" ref={revealCard} style={{ transitionDelay: `${delay}ms` }}>
+    <li
+      className="projects-project reveal"
+      ref={revealCard}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
       <div className="project-inner">
         <header>
           <div className="project-top">
