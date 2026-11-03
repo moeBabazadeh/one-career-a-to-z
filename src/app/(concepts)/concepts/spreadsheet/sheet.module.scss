@@ -1,0 +1,2148 @@
+// Concept S · Spreadsheet. A working spreadsheet, unbranded: title bar with menus, a pill
+// toolbar, formula bar and name box, the grid (a sticky-header table with frozen panes), sheet
+// tabs and a status bar along the bottom. Light by default; dark follows the system or the
+// switcher (see _shared/_scheme.scss).
+@use '../_shared/scheme';
+
+@mixin dark-tokens {
+  --page: #1c1d20;
+  --chrome: #232428;
+  --chrome-2: #2c2e33;
+  --raised: #2a2c31;
+  --ink: #e3e3e3;
+  --ink-2: #c4c7c5;
+  --muted: #9aa0a6;
+  --faint: #6f747b;
+  --line: #313338;
+  --line-2: #43464c;
+  --head-bg: #222327;
+  --head-ink: #9aa0a6;
+  --head-on: #273a5a;
+  --head-on-ink: #a8c7fa;
+  --head-full: #a8c7fa;
+  --head-full-ink: #10233f;
+  --sel: #8ab4f8;
+  --sel-fill: rgba(138, 180, 248, 0.16);
+  --brand: #34a853;
+  --on-brand: #0f1f14;
+  --accent: #8ab4f8;
+  --accent-soft: #263553;
+  --good-ink: #81c995;
+  --good-bg: #1d3426;
+  --bad-ink: #f28b82;
+  --bad-bg: #3a201f;
+  --warn-ink: #fdd663;
+  --warn-bg: #3a3216;
+  --input-ink: #8ab4f8;
+  --strong-ink: #e3e3e3;
+  --scale-lo: #1c1d20;
+  --scale-hi: #2e7d55;
+  --databar: rgba(129, 201, 149, 0.3);
+  --databar-edge: #81c995;
+  --note: #fbbc04;
+  --err: #f28b82;
+  --trace: #8ab4f8;
+  --trace-sheet: #c4c7c5;
+  --chart-1: #8ab4f8;
+  --chart-2: #81c995;
+  --chart-grid: #313338;
+  --chart-ink: #9aa0a6;
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --r0: #8ab4f8;
+  --r1: #f28b82;
+  --r2: #d7aefb;
+  --r3: #81c995;
+  --r4: #fcad70;
+  --r5: #78d9ec;
+  --r6: #ff8bcb;
+  --r7: #fdd663;
+  --tok-str: #81c995;
+  --tok-num: #78d9ec;
+}
+
+.root {
+  --page: #ffffff;
+  --chrome: #f9fbfd;
+  --chrome-2: #edf2fa;
+  --raised: #ffffff;
+  --ink: #1f1f1f;
+  --ink-2: #444746;
+  --muted: #5f6368;
+  --faint: #8e9297;
+  --line: #e1e3e6;
+  --line-2: #c4c7c5;
+  --head-bg: #f8f9fa;
+  --head-ink: #5f6368;
+  --head-on: #d3e3fd;
+  --head-on-ink: #0b57d0;
+  --head-full: #0b57d0;
+  --head-full-ink: #ffffff;
+  --sel: #1a73e8;
+  --sel-fill: rgba(26, 115, 232, 0.1);
+  --brand: #188038;
+  --on-brand: #ffffff;
+  --accent: #1a73e8;
+  --accent-soft: #e8f0fe;
+  --good-ink: #137333;
+  --good-bg: #e6f4ea;
+  --bad-ink: #c5221f;
+  --bad-bg: #fce8e6;
+  --warn-ink: #9a5b00;
+  --warn-bg: #fef7e0;
+  --input-ink: #0b57d0;
+  --strong-ink: #1f1f1f;
+  --scale-lo: #ffffff;
+  --scale-hi: #57bb8a;
+  --databar: rgba(52, 168, 83, 0.22);
+  --databar-edge: #34a853;
+  --note: #f29900;
+  --err: #d93025;
+  --trace: #1a73e8;
+  --trace-sheet: #3c4043;
+  --chart-1: #1a73e8;
+  --chart-2: #188038;
+  --chart-grid: #e8eaed;
+  --chart-ink: #5f6368;
+  --shadow: 0 8px 28px rgba(60, 64, 67, 0.22), 0 1px 3px rgba(60, 64, 67, 0.18);
+  --r0: #1a73e8;
+  --r1: #d93025;
+  --r2: #9334e6;
+  --r3: #188038;
+  --r4: #e37400;
+  --r5: #129eaf;
+  --r6: #d01884;
+  --r7: #b06000;
+  --tok-str: #188038;
+  --tok-num: #1967d2;
+
+  --sans: var(--font-inter), system-ui, sans-serif;
+  --mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  @include scheme.dark {
+    @include dark-tokens;
+  }
+
+  min-height: 100vh;
+  background: var(--page);
+  color: var(--ink);
+  font: 13px/1.4 var(--sans);
+  font-feature-settings:
+    'tnum' 1,
+    'cv11' 1;
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
+  button {
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  kbd {
+    display: inline-block;
+    padding: 0 5px;
+    border: 1px solid var(--line-2);
+    border-radius: 4px;
+    background: var(--chrome);
+    color: var(--ink-2);
+    font: 500 11px/18px var(--sans);
+    white-space: nowrap;
+  }
+}
+
+:global(body):has(.root) {
+  background: #ffffff;
+
+  @include scheme.dark {
+    background: #1c1d20;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--chrome);
+}
+
+/* ------------------------------------------------------------------ title bar and menus */
+
+.titleBar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 6px 14px 2px;
+}
+
+.appIcon {
+  display: grid;
+  flex: none;
+}
+
+.docMeta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.docName {
+  margin: 0 0 0 7px;
+  overflow: hidden;
+  font: 500 17px/1.25 var(--sans);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menuBar {
+  display: flex;
+  margin-top: 1px;
+}
+
+.menu {
+  position: relative;
+}
+
+.menuBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border: 0;
+  border-radius: 5px;
+  background: none;
+  font-size: 13.5px;
+
+  &:hover,
+  &.menuBtnOn {
+    background: var(--chrome-2);
+  }
+}
+
+.menuList {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 60;
+  min-width: 250px;
+  max-height: 70vh;
+  padding: 6px 0;
+  overflow: auto;
+  border-radius: 8px;
+  background: var(--raised);
+  box-shadow: var(--shadow);
+
+  hr {
+    margin: 5px 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+.menuItem {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+  padding: 6px 14px 6px 8px;
+  border: 0;
+  background: none;
+  text-align: left;
+  white-space: nowrap;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    outline: none;
+    background: var(--chrome-2);
+  }
+
+  &:disabled {
+    color: var(--faint);
+    cursor: default;
+  }
+
+  kbd {
+    border: 0;
+    background: none;
+    color: var(--muted);
+  }
+}
+
+.menuCheck {
+  display: grid;
+  color: var(--accent);
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.savedNote {
+  margin-left: 6px;
+  align-self: flex-start;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+
+  @media (max-width: 1180px) {
+    display: none;
+  }
+}
+
+.titleActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.phoneMenu {
+  display: none;
+
+  .menuList {
+    right: 0;
+    left: auto;
+  }
+}
+
+.readBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 16px 0 12px;
+  border: 1px solid var(--line-2);
+  border-radius: 18px;
+  background: var(--page);
+  font-weight: 500;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--accent-soft);
+  }
+}
+
+/* ------------------------------------------------------------------ toolbar */
+
+.toolbar {
+  display: flex;
+  flex: none;
+  gap: 1px;
+  align-items: center;
+  height: 40px;
+  margin: 4px 10px 8px;
+  padding: 0 8px;
+  overflow-x: auto;
+  border-radius: 20px;
+  background: var(--chrome-2);
+  scrollbar-width: none;
+}
+
+.tool {
+  display: inline-flex;
+  flex: none;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 5px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--ink-2);
+
+  &:hover:not(:disabled) {
+    background: color-mix(in oklab, var(--ink) 8%, transparent);
+  }
+
+  &:disabled {
+    color: var(--faint);
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &.toolOn {
+    background: var(--head-on);
+    color: var(--head-on-ink);
+  }
+}
+
+.toolWide {
+  padding: 0 10px 0 7px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.toolSep {
+  flex: none;
+  width: 1px;
+  height: 20px;
+  margin: 0 6px;
+  background: var(--line-2);
+}
+
+.fmtMenu .menuBtn {
+  height: 30px;
+  padding: 0 4px 0 8px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+}
+
+.fmtBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  svg {
+    width: 15px;
+    flex: none;
+  }
+}
+
+/* ------------------------------------------------------------------ formula bar */
+
+.formulaBar {
+  display: flex;
+  flex: none;
+  align-items: stretch;
+  height: 32px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--page);
+}
+
+.nameBox {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  width: 130px;
+  border-right: 1px solid var(--line);
+
+  input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0 4px 0 12px;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: 500 13px var(--sans);
+
+    &:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+  }
+}
+
+.nameDrop {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 100%;
+  border: 0;
+  background: none;
+  color: var(--muted);
+
+  svg {
+    width: 15px;
+  }
+}
+
+.nameList {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  z-index: 60;
+  min-width: 260px;
+  padding: 6px 0;
+  border-radius: 8px;
+  background: var(--raised);
+  box-shadow: var(--shadow);
+
+  button {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 7px 14px;
+    border: 0;
+    background: none;
+    text-align: left;
+
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      background: var(--chrome-2);
+    }
+
+    span {
+      color: var(--muted);
+      font: 12px var(--mono);
+    }
+  }
+}
+
+.fxMark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  border-right: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.fbField {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.fbStatic {
+  width: 100%;
+  height: 100%;
+  padding: 0 12px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: 13px var(--sans);
+  cursor: text;
+
+  &.fbFormula {
+    font: 12.5px var(--mono);
+  }
+}
+
+.fbInput {
+  height: 100%;
+
+  .fiInput,
+  .fiMirror {
+    height: 100%;
+    padding: 0 12px;
+    line-height: 31px;
+  }
+}
+
+.fbAssist {
+  top: calc(100% + 4px);
+  left: 8px;
+}
+
+/* ------------------------------------------------------------------ the formula input */
+
+.fi {
+  position: relative;
+  display: block;
+  font: 13px/20px var(--sans);
+
+  &.fiFormula {
+    font: 12.5px/20px var(--mono);
+  }
+}
+
+.fiMirror,
+.fiInput {
+  margin: 0;
+  padding: 2px 6px;
+  font: inherit;
+  letter-spacing: normal;
+  white-space: pre;
+}
+
+.fiMirror {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+.fiInput {
+  position: relative;
+  display: block;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--ink);
+
+  &::selection {
+    background: color-mix(in oklab, var(--accent) 30%, transparent);
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+@for $i from 0 through 7 {
+  .ref#{$i} {
+    color: var(--r#{$i});
+    font-weight: 600;
+  }
+
+  .refBox#{$i} {
+    border-color: var(--r#{$i});
+    background: color-mix(in oklab, var(--r#{$i}) 10%, transparent);
+  }
+}
+
+.tok_fn {
+  font-weight: 600;
+}
+
+.tok_str {
+  color: var(--tok-str);
+}
+
+.tok_num {
+  color: var(--tok-num);
+}
+
+.tok_err {
+  color: var(--err);
+}
+
+.tok_op,
+.tok_plain {
+  color: var(--ink);
+}
+
+.assist {
+  position: absolute;
+  z-index: 40;
+  width: max-content;
+  max-width: min(440px, 86vw);
+  padding: 6px 0;
+  border-radius: 8px;
+  background: var(--raised);
+  box-shadow: var(--shadow);
+  font: 13px/1.4 var(--sans);
+  white-space: normal;
+}
+
+.assistItem {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 10px;
+  width: 100%;
+  padding: 5px 12px;
+  border: 0;
+  background: none;
+  text-align: left;
+
+  b {
+    font: 600 12.5px var(--mono);
+  }
+
+  span {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  &[aria-selected='true'] {
+    background: var(--accent-soft);
+  }
+}
+
+.assistFoot {
+  margin: 4px 12px 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11.5px;
+
+  kbd {
+    margin: 0 2px;
+  }
+}
+
+.hint {
+  display: grid;
+  gap: 4px;
+  padding: 8px 12px;
+
+  code {
+    font: 12.5px var(--mono);
+  }
+
+  > span {
+    color: var(--muted);
+    font-size: 12px;
+  }
+}
+
+.hintOn {
+  border-radius: 3px;
+  background: var(--accent-soft);
+  color: var(--head-on-ink);
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------------ trace bar */
+
+.traceBar {
+  flex: none;
+  max-height: 104px;
+  padding: 6px 12px 7px;
+  overflow: auto;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in oklab, var(--accent) 5%, var(--page));
+  font-size: 12.5px;
+}
+
+.traceHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  align-items: center;
+}
+
+.traceTitle {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--trace);
+
+  b {
+    color: var(--ink);
+    font: 600 12.5px var(--mono);
+  }
+
+  svg {
+    width: 16px;
+  }
+}
+
+.traceLabel {
+  color: var(--muted);
+}
+
+.traceFormula {
+  flex: 1 1 280px;
+  min-width: 0;
+  font: 12.5px var(--mono);
+  overflow-wrap: anywhere;
+}
+
+.traceValue {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.traceActions {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+
+  button {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    height: 26px;
+    padding: 0 8px;
+    border: 1px solid var(--line-2);
+    border-radius: 13px;
+    background: var(--page);
+    color: var(--ink-2);
+    font-size: 12px;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    svg {
+      width: 15px;
+    }
+  }
+}
+
+.traceList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 5px 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: contents;
+  }
+}
+
+.traceRow,
+.traceVia {
+  display: inline-flex;
+  gap: 8px;
+  align-items: baseline;
+  max-width: 100%;
+  padding: 2px 9px;
+  border: 1px solid color-mix(in oklab, var(--trace) 35%, var(--line));
+  border-radius: 12px;
+  background: var(--page);
+  text-align: left;
+
+  &:hover {
+    border-color: var(--trace);
+  }
+}
+
+.traceVia {
+  border-style: dashed;
+  color: var(--muted);
+  font: 11.5px var(--mono);
+
+  &::before {
+    content: '↳';
+  }
+}
+
+.traceDeep .traceRow {
+  opacity: 0.85;
+}
+
+.traceRef {
+  color: var(--trace);
+  font: 600 12px var(--mono);
+  white-space: nowrap;
+
+  b {
+    color: var(--ink);
+  }
+}
+
+.traceVals {
+  overflow: hidden;
+  color: var(--ink-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ grid */
+
+.body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  background: var(--page);
+
+  // The active cell is the focus mark; a keyboard user also sees the grid itself take focus.
+  &:has(.table:focus-visible)::after {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--accent) 50%, transparent);
+    content: '';
+    pointer-events: none;
+  }
+}
+
+.scroller {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--page);
+  -webkit-overflow-scrolling: touch;
+
+  &.pointing td {
+    cursor: cell;
+  }
+}
+
+.content {
+  position: relative;
+  isolation: isolate;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font: 13px/1.25 var(--sans);
+  user-select: none;
+  -webkit-user-select: none;
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.corner,
+.colHead,
+.rowHead {
+  padding: 0;
+  border-right: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
+  background: var(--head-bg);
+  color: var(--head-ink);
+  font: 500 11.5px var(--sans);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.corner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 8;
+  cursor: pointer;
+}
+
+.cornerMark {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 0;
+  height: 0;
+  border-bottom: 9px solid var(--line-2);
+  border-left: 9px solid transparent;
+}
+
+.colHead {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  cursor: s-resize;
+
+  &.frozenC {
+    z-index: 7;
+  }
+}
+
+.rowHead {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  cursor: e-resize;
+
+  &.frozenR {
+    z-index: 7;
+  }
+}
+
+.headOn {
+  background: var(--head-on);
+  color: var(--head-on-ink);
+  font-weight: 700;
+}
+
+.headFull {
+  background: var(--head-full);
+  color: var(--head-full-ink);
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  z-index: 2;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+
+  &::after {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--sel);
+    opacity: 0;
+    content: '';
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+.cell {
+  height: inherit;
+  padding: 0 6px;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  vertical-align: bottom;
+  white-space: nowrap;
+  cursor: cell;
+
+  .noLines & {
+    border-color: transparent;
+  }
+}
+
+.cv {
+  position: relative;
+  padding-bottom: 4px;
+  overflow: hidden;
+}
+
+.al_left {
+  text-align: left;
+}
+
+.al_center {
+  text-align: center;
+}
+
+.al_right {
+  text-align: right;
+}
+
+.b {
+  font-weight: 650;
+}
+
+.i {
+  font-style: italic;
+}
+
+.mono {
+  font: 12px/1.25 var(--mono);
+}
+
+.size_title {
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.size_lead {
+  font-size: 13.5px;
+}
+
+.fill_head {
+  background: var(--head-bg);
+  color: var(--ink-2);
+  font-size: 12.5px;
+}
+
+.fill_total {
+  border-top: 1px solid var(--ink-2);
+}
+
+.tone_input {
+  color: var(--input-ink);
+}
+
+.tone_muted {
+  color: var(--muted);
+}
+
+.tone_good {
+  background: var(--good-bg);
+  color: var(--good-ink);
+}
+
+.tone_bad {
+  background: var(--bad-bg);
+  color: var(--bad-ink);
+}
+
+.tone_warn {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+}
+
+.tone_accent {
+  color: var(--accent);
+}
+
+.tone_strong {
+  color: var(--strong-ink);
+  font-weight: 650;
+}
+
+.wrap {
+  vertical-align: top;
+  white-space: normal;
+
+  .cv {
+    padding: 4px 0;
+    line-height: 18px;
+  }
+}
+
+.spill {
+  overflow: visible;
+
+  .cv {
+    width: max-content;
+  }
+}
+
+.inSel {
+  background-color: var(--sel-fill);
+}
+
+.active {
+  background-color: var(--page);
+}
+
+.frozenR,
+.frozenC {
+  position: sticky;
+  z-index: 3;
+  background-color: var(--page);
+
+  &.inSel {
+    background-image: linear-gradient(var(--sel-fill), var(--sel-fill));
+  }
+
+  &.fill_head {
+    background-color: var(--head-bg);
+  }
+}
+
+.frozenR.frozenC {
+  z-index: 4;
+}
+
+.freezeB {
+  border-bottom: 2px solid var(--line-2);
+}
+
+.freezeR {
+  border-right: 2px solid var(--line-2);
+}
+
+.cellLink {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.dataBar {
+  position: absolute;
+  top: 3px;
+  bottom: 4px;
+  left: 0;
+  border-right: 2px solid var(--databar-edge);
+  border-radius: 0 3px 3px 0;
+  background: var(--databar);
+  pointer-events: none;
+}
+
+.cell:has(.dataBar) {
+  position: relative;
+}
+
+.noteMark,
+.errMark {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.noteMark {
+  right: 0;
+  border-top: 7px solid var(--note);
+  border-left: 7px solid transparent;
+}
+
+.errMark {
+  left: 0;
+  border-top: 7px solid var(--err);
+  border-right: 7px solid transparent;
+}
+
+.cell:has(.noteMark),
+.cell:has(.errMark) {
+  position: relative;
+}
+
+.isErr {
+  color: var(--err);
+  font-weight: 600;
+}
+
+.editing {
+  position: relative;
+  z-index: 9;
+  overflow: visible;
+}
+
+.cellEditor {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  z-index: 10;
+  min-width: var(--cw);
+  background: var(--page);
+  box-shadow:
+    0 0 0 2px var(--sel),
+    0 4px 14px rgba(0, 0, 0, 0.18);
+
+  .fi {
+    display: inline-block;
+    min-width: var(--cw);
+    vertical-align: top;
+  }
+
+  .fiInput {
+    min-width: var(--cw);
+    max-width: 70vw;
+    field-sizing: content;
+  }
+
+  .fiInput,
+  .fiMirror {
+    padding: 2px 6px 1px;
+  }
+}
+
+.cellAssist {
+  top: calc(100% + 6px);
+  left: -2px;
+}
+
+.overlayUi {
+  touch-action: none;
+}
+
+.refBox {
+  position: absolute;
+  z-index: 2;
+  border: 2px solid;
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.refLive {
+  border-style: dashed;
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  to {
+    opacity: 0.55;
+  }
+}
+
+.ants {
+  position: absolute;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
+
+  rect {
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    fill: none;
+    stroke: var(--sel);
+    stroke-width: 2;
+    stroke-dasharray: 4 3;
+    animation: ants 0.6s linear infinite;
+  }
+}
+
+@keyframes ants {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+.fillPreview {
+  position: absolute;
+  z-index: 2;
+  border: 1px dashed var(--ink-2);
+  pointer-events: none;
+}
+
+.fillHandle {
+  position: absolute;
+  z-index: 3;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--page);
+  border-radius: 1px;
+  background: var(--sel);
+  cursor: crosshair;
+
+  &::before {
+    position: absolute;
+    inset: -8px;
+    content: '';
+  }
+
+  @media (pointer: coarse) {
+    width: 14px;
+    height: 14px;
+    margin: -3px 0 0 -3px;
+    border-radius: 50%;
+  }
+}
+
+.hoverCard {
+  position: absolute;
+  z-index: 12;
+  display: grid;
+  gap: 6px;
+  max-width: 340px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: var(--raised);
+  box-shadow: var(--shadow);
+  font-size: 12.5px;
+  line-height: 1.45;
+  white-space: pre-line;
+
+  p {
+    margin: 0;
+  }
+}
+
+.cardErr {
+  color: var(--err);
+  font-weight: 600;
+}
+
+.cardNote {
+  max-height: 200px;
+  overflow: auto;
+  color: var(--ink-2);
+}
+
+.cardLink {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+
+  svg {
+    flex: none;
+    width: 15px;
+  }
+}
+
+/* ------------------------------------------------------------------ trace arrows */
+
+.traceSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.arrow {
+  path {
+    fill: none;
+    stroke: var(--trace);
+    stroke-width: 1.6;
+  }
+}
+
+.arrowHead {
+  fill: var(--trace);
+}
+
+.arrowDot {
+  fill: var(--trace);
+}
+
+.arrowDeep {
+  opacity: 0.55;
+}
+
+.arrowSheet {
+  fill: none;
+  stroke: var(--trace-sheet);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 4;
+}
+
+.precBox {
+  fill: color-mix(in oklab, var(--trace) 7%, transparent);
+  stroke: var(--trace);
+  stroke-width: 1.6;
+}
+
+.sheetTag {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  height: 24px;
+  padding: 0 9px 0 6px;
+  border: 1px solid var(--trace-sheet);
+  border-radius: 12px;
+  background: var(--raised);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  font: 600 11.5px var(--mono);
+  white-space: nowrap;
+
+  svg {
+    width: 15px;
+    color: var(--muted);
+  }
+
+  &:hover {
+    border-color: var(--trace);
+    color: var(--trace);
+  }
+}
+
+.sheetTagOut {
+  border-style: dashed;
+}
+
+/* ------------------------------------------------------------------ charts */
+
+.chart {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 10px 12px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--raised);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  cursor: default;
+}
+
+.chartOn {
+  outline: 2px solid var(--sel);
+  outline-offset: -1px;
+}
+
+.chartHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  min-height: 26px;
+
+  b {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.chartRanges {
+  display: flex;
+  gap: 4px;
+}
+
+.rangeChip {
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: none;
+  color: var(--muted);
+  font: 10.5px var(--mono);
+
+  &:hover {
+    border-color: var(--sel);
+    color: var(--sel);
+  }
+}
+
+.plot {
+  position: relative;
+  flex: 1;
+  margin-top: 4px;
+
+  svg {
+    display: block;
+    overflow: visible;
+  }
+}
+
+.chartEmpty {
+  color: var(--muted);
+}
+
+.axis {
+  line {
+    stroke: var(--chart-grid);
+    stroke-width: 1;
+  }
+
+  text {
+    fill: var(--chart-ink);
+    font: 10.5px var(--sans);
+  }
+}
+
+.nowLine line {
+  stroke: var(--chart-2);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 3;
+}
+
+.hit {
+  fill: transparent;
+}
+
+.ganttRow {
+  cursor: default;
+}
+
+.rowOn .hit {
+  fill: color-mix(in oklab, var(--ink) 4%, transparent);
+}
+
+.rowLabel {
+  fill: var(--ink-2);
+  font: 12px var(--sans);
+}
+
+.valLabel {
+  fill: var(--ink-2);
+  font: 600 11.5px var(--sans);
+}
+
+.bar {
+  fill: var(--chart-1);
+}
+
+.barNow {
+  fill: var(--chart-2);
+}
+
+.tip {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  gap: 1px;
+  min-width: 150px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: var(--raised);
+  box-shadow: var(--shadow);
+  font-size: 12px;
+  pointer-events: none;
+
+  span {
+    color: var(--muted);
+  }
+}
+
+/* ------------------------------------------------------------------ tabs and status */
+
+.foot {
+  flex: none;
+  padding-right: var(--switcher-room-x);
+  border-top: 1px solid var(--line);
+  background: var(--chrome);
+}
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+  height: 40px;
+  padding: 0 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tab {
+  flex: none;
+  padding: 0 16px;
+  border: 0;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: var(--ink-2);
+  font-weight: 500;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--chrome-2);
+  }
+}
+
+.tabOn {
+  border-bottom-color: var(--brand);
+  background: var(--page);
+  color: var(--brand);
+  font-weight: 650;
+
+  @include scheme.dark {
+    color: var(--good-ink);
+    border-bottom-color: var(--good-ink);
+  }
+}
+
+.tabPoint {
+  outline: 1px dashed var(--sel);
+  outline-offset: -4px;
+}
+
+.status {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.mode {
+  flex: none;
+  min-width: 46px;
+  font-weight: 600;
+}
+
+.mode_Point {
+  color: var(--accent);
+}
+
+.mode_Enter,
+.mode_Edit {
+  color: var(--ink);
+}
+
+.statusMsg {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+  margin-left: auto;
+
+  b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+}
+
+/* ------------------------------------------------------------------ dialog */
+
+.dialog {
+  width: min(880px, calc(100vw - 32px));
+  max-height: min(84vh, 900px);
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--raised);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.35);
+  }
+}
+
+.dialogHead {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--raised);
+
+  h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  button {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 16px;
+    background: none;
+
+    &:hover {
+      background: var(--chrome-2);
+    }
+  }
+}
+
+.dialogBody {
+  display: grid;
+  gap: 22px;
+  padding: 16px 18px 22px;
+
+  h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+  }
+
+  h4 {
+    margin: 14px 0 6px;
+    color: var(--muted);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+.dialogNote {
+  margin: 0 0 6px;
+  color: var(--ink-2);
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 6px 22px;
+  margin: 0;
+
+  div {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ink-2);
+  }
+}
+
+.fnGroup ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) 1fr;
+    gap: 14px;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-bottom: 6px;
+    }
+  }
+
+  code {
+    font: 12px var(--mono);
+    overflow-wrap: anywhere;
+  }
+
+  span {
+    color: var(--ink-2);
+    font-size: 12.5px;
+  }
+}
+
+.plainList {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--ink-2);
+
+  code {
+    font: 12px var(--mono);
+  }
+}
+
+/* ------------------------------------------------------------------ phone editing sheet */
+
+.phoneSheet {
+  position: fixed;
+  right: 0;
+  bottom: var(--switcher-room-y);
+  left: 0;
+  z-index: 50;
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  border-radius: 14px 14px 0 0;
+  background: var(--raised);
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.phoneHead {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.phoneAddr {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  b {
+    color: var(--ink);
+  }
+
+  em {
+    color: var(--accent);
+    font-style: normal;
+  }
+}
+
+.phoneBtn {
+  min-width: 44px;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--chrome-2);
+  font-weight: 500;
+}
+
+.phoneDone {
+  display: grid;
+  place-items: center;
+  background: var(--sel);
+  color: var(--page);
+}
+
+.phoneInput {
+  border: 2px solid var(--sel);
+  border-radius: 8px;
+  font-size: 16px !important;
+
+  .fiInput,
+  .fiMirror {
+    padding: 8px 10px;
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
+
+.phoneAssist {
+  position: static;
+  max-width: none;
+  max-height: 150px;
+  overflow: auto;
+  box-shadow: none;
+  border: 1px solid var(--line);
+}
+
+.phoneKeys,
+.phoneFns {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  button {
+    flex: none;
+    min-width: 40px;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--page);
+    font: 600 15px var(--mono);
+  }
+}
+
+.phoneFns button {
+  font-size: 12.5px;
+}
+
+/* ------------------------------------------------------------------ read as a page */
+
+.reader {
+  min-height: 100vh;
+  padding: 0 16px 120px;
+  background: var(--page);
+}
+
+.rBar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+  background: color-mix(in oklab, var(--page) 88%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.rPage {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 15.5px;
+  line-height: 1.6;
+
+  h1 {
+    margin: 24px 0 6px;
+    font-size: 34px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  h2 {
+    margin: 44px 0 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+    font-size: 19px;
+  }
+
+  h3 {
+    margin: 0 0 2px;
+    font-size: 15.5px;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  p {
+    margin: 0 0 12px;
+  }
+
+  ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+}
+
+.rRole {
+  color: var(--ink-2);
+  font-size: 17px;
+}
+
+.rLede {
+  color: var(--muted);
+}
+
+.rLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.rFigures {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 0;
+
+  div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  dt {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 650;
+  }
+}
+
+.rItem {
+  margin-bottom: 22px;
+}
+
+.rMeta {
+  color: var(--muted);
+  font-size: 13.5px;
+  font-weight: 400;
+}
+
+.rRoots li {
+  margin-bottom: 8px;
+}
+
+.rTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+
+  th,
+  td {
+    padding: 6px 8px 6px 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    color: var(--muted);
+    font-weight: 600;
+  }
+}
+
+.rFoot {
+  margin-top: 48px;
+  color: var(--ink-2);
+}
+
+/* ------------------------------------------------------------------ phones */
+
+@media (max-width: 640px) {
+  .titleBar {
+    min-height: 48px;
+    padding: 4px 10px;
+  }
+
+  .docName {
+    font-size: 15.5px;
+  }
+
+  .menuBar,
+  .toolbar {
+    display: none;
+  }
+
+  .phoneMenu {
+    display: block;
+  }
+
+  .readBtn {
+    height: 34px;
+    padding: 0 10px;
+
+    span {
+      display: none;
+    }
+  }
+
+  .rBar .readBtn span {
+    display: inline;
+  }
+
+  .nameBox {
+    width: 82px;
+
+    input {
+      padding-left: 8px;
+    }
+  }
+
+  .nameDrop {
+    width: 20px;
+  }
+
+  .fxMark {
+    width: 30px;
+  }
+
+  .traceBar {
+    max-height: 92px;
+    padding: 5px 10px 6px;
+  }
+
+  .traceFormula {
+    flex-basis: 100%;
+    order: 3;
+  }
+
+  .traceActions span {
+    display: none;
+  }
+
+  .foot {
+    padding-right: 0;
+    padding-bottom: var(--switcher-room-y);
+  }
+
+  .tabs {
+    height: 42px;
+    padding: 0 4px;
+  }
+
+  .tab {
+    padding: 0 13px;
+  }
+
+  .status {
+    height: 26px;
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .statusMsg {
+    display: none;
+  }
+
+  .statWide {
+    display: none;
+  }
+
+  .stats {
+    gap: 10px;
+  }
+
+  .hoverCard {
+    max-width: 240px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ants rect,
+  .refLive {
+    animation: none;
+  }
+}
