@@ -1,0 +1,75 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Form controls and the page scrollbar follow light or dark (see _shared/_scheme.scss). */
+html {
+  color-scheme: light;
+}
+
+html[data-scheme='dark'] {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-scheme='light']) {
+    color-scheme: dark;
+  }
+}
+
+/*
+ * The corner the theme switcher sits in, in the same place on every concept. Fixed UI along
+ * the bottom edge keeps out of it: lift above --switcher-room-y, or end --switcher-room-x
+ * short of the right edge.
+ */
+:root {
+  --switcher-room-x: 470px;
+  --switcher-room-y: calc(84px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 480px) {
+  :root {
+    --switcher-room-x: 326px;
+  }
+}

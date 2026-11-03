@@ -1,0 +1,35 @@
+// Light and dark for every concept. A concept's own look is its base style; the other scheme
+// goes inside one of these mixins, included in the concept's root class. Dark applies when the
+// visitor chose dark, or chose nothing and the system is dark; light mirrors it. The choice is
+// `<html data-scheme>`, set before first paint (see scheme.ts).
+//
+//   .root {
+//     --bg: #fff;
+//     @include scheme.dark {
+//       --bg: #111;
+//     }
+//   }
+
+@mixin dark {
+  :global(html[data-scheme='dark']) & {
+    @content;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(html:not([data-scheme='light'])) & {
+      @content;
+    }
+  }
+}
+
+@mixin light {
+  :global(html[data-scheme='light']) & {
+    @content;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :global(html:not([data-scheme='dark'])) & {
+      @content;
+    }
+  }
+}
