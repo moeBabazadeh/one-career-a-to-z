@@ -629,7 +629,7 @@ const SEEDS: Seed[] = [
     : []),
   {
     team: 'lead',
-    title: 'Redesign CI/CD, then consult on architecture and releases',
+    title: 'Redesign the CI/CD pipelines',
     body: [p(zo.duties[3])],
     status: 'done',
     priority: 3,

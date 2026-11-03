@@ -481,11 +481,12 @@ const SOURCES: Source[] = [
     body: `${products.attendum.title} inside Canvas, built with ${lti.tech.join(' and ')}.`,
     files: [['A', 'attendum/canvas-lti']],
   },
+  { id: 'zeroone-merge', branch: 'main', ...at(zeroone.to, EARLY), parents: ['keypad', 'lti'] },
   {
     id: 'neuroject',
     branch: 'neuroject',
     ...at(neuroject.from),
-    parents: ['keypad'],
+    parents: ['zeroone-merge'],
     subject: `Join ${neuroject.org} as ${current.previous.title}`,
     body: bullets(neuroject.duties[2], neuroject.duties[3]),
     files: [
@@ -494,14 +495,6 @@ const SOURCES: Source[] = [
       ['A', 'infra/alarms'],
       ['A', 'infra/guardduty'],
     ],
-  },
-  {
-    id: 'consult',
-    branch: 'zeroone',
-    ...at({ y: zeroone.to.y }, 0.65),
-    subject: 'Stay on as technical consultant',
-    body: zeroone.duties[3],
-    files: [['M', 'ci/deploy']],
   },
   {
     id: 'neurobuild',
@@ -519,7 +512,6 @@ const SOURCES: Source[] = [
     ],
     links: projectLinks(products.neurobuild.links),
   },
-  { id: 'zeroone-merge', branch: 'main', ...at(zeroone.to), parents: ['keypad', 'consult'] },
   { id: 'pr-forge', branch: 'upstream', ...pr(contributions.definitelyTyped, 0.4) },
   {
     id: 'neuroship',

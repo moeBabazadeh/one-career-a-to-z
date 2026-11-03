@@ -234,7 +234,7 @@ export const YEAR0 = Math.min(...roles.map((r) => r.start));
 
 /**
  * The roles held at a moment: the primary is the latest started full-time role, the secondary
- * any other role running alongside it (a consultancy tail or a contract).
+ * any other role running alongside it (a contract).
  */
 export function rolesAt(t: number, now: number) {
   const active = roles.filter((r) => r.start <= t && t < (r.end ?? now + 1));

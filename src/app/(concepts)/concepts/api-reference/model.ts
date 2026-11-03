@@ -91,14 +91,12 @@ export const VERSIONS: Version[] = [
   release(neuroship.from, [
     ['added', `${neuroship.org}: ${titleOf(neuroship)}, on contract alongside ${neuroject.org}.`],
   ]),
-  release(zeroone.to, [
-    ['removed', `${zeroone.org}: the technical consulting that followed the lead role ends.`],
-  ]),
   release(neuroject.from, [
     [
       'added',
       `${neuroject.org}: ${current.previous.title}. Leads the architecture and build of ${neurobuild.title}.`,
     ],
+    ['removed', `${zeroone.org}.`],
   ]),
   release(zeroone.from, [
     [

@@ -87,7 +87,6 @@ const RUNBOOKS = [
     from: `${zeroone.org} · ${alget.org}`,
     steps: [
       'Redesign the CI/CD pipelines to cut build and deployment overhead.',
-      'Stay on as technical consultant for architecture, performance and release reliability.',
       'Ship MVP features quickly with the product and backend teams.',
     ],
   },

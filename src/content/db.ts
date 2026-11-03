@@ -142,13 +142,13 @@ export const roles = {
     sector: 'an edtech company',
     steps: [{ title: 'Lead Frontend Developer', from: { y: 2021, m: 2 } }],
     from: { y: 2021, m: 2 },
-    to: { y: 2024, m: 12 },
+    to: { y: 2024, m: 6 },
     summary: 'Active-Class LMS and proctoring, Attendum firmware and apps on both stores.',
     duties: [
       'Led the frontend architecture of Active-Class, an integrated LMS and exam monitoring platform, including identity checks during live exams with the Microsoft Azure Face API.',
       'Shipped Attendum end to end: firmware for the ESP32 card readers and nRF52840 BLE beacons, the iOS and Android app, the staff dashboard, and a Canvas LTI app.',
       'Built Office.js add-ins for PowerPoint and Word, the School.how dashboard, the Education Guide app, and the Learning Kit and Exam Kit websites.',
-      'Redesigned the CI/CD pipelines to cut build and deployment overhead, then stayed on as a technical consultant for architecture, performance, and release reliability.',
+      'Redesigned the CI/CD pipelines to cut build and deployment overhead.',
     ],
   },
   alget: {
