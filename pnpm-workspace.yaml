@@ -1,0 +1,4 @@
+# Install scripts pnpm may run. @parcel/watcher (via sass) ships prebuilt binaries, so its
+# build-from-source script isn't needed.
+allowBuilds:
+  '@parcel/watcher': false

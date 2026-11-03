@@ -10,6 +10,7 @@
 - Replace paid fonts with Inter and JetBrains Mono
 - Fix share links pointing at localhost
 - Add README, licence and CI checks
+- Switch from Yarn to pnpm
 
 ## 3.0.0 (26 Oct 2026)
 

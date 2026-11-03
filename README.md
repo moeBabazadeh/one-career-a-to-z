@@ -34,19 +34,19 @@ Nineteen earlier designs live on in the gallery's **Bonus** section. The origina
 
 ## Running it locally
 
-You need Node.js 24 (see [`.nvmrc`](.nvmrc)) and Yarn 1.
+You need Node.js 24 (see [`.nvmrc`](.nvmrc)) and pnpm (the version is pinned in `package.json`).
 
 ```sh
-yarn install
-yarn dev        # http://localhost:3000
+pnpm install
+pnpm dev        # http://localhost:3000
 ```
 
 | Command          | What it does                                |
 | ---------------- | ------------------------------------------- |
-| `yarn dev`       | Start the development server                |
-| `yarn lint`      | ESLint, including the facts rule            |
-| `yarn typecheck` | Generate Next.js types, then run TypeScript |
-| `yarn build`     | Production build                            |
+| `pnpm dev`       | Start the development server                |
+| `pnpm lint`      | ESLint, including the facts rule            |
+| `pnpm typecheck` | Generate Next.js types, then run TypeScript |
+| `pnpm build`     | Production build                            |
 
 No environment variables are required. [`.env.example`](.env.example) lists the one optional setting.
 
