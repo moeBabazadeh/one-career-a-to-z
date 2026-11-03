@@ -24,8 +24,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
+# env files (see .env.example)
+.env*
+!.env.example
 
 # vercel
 .vercel
@@ -33,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local-only tools: the theme review page and its data, and Next.js's note for AI agents
+/.review/
+/src/app/(concepts)/review/
+AGENTS.md
