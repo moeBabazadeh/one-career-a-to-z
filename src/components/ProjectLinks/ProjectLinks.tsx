@@ -5,7 +5,12 @@ import IconPlayStore from '@/assets/icons/playstore';
 import IconExternal from '@/assets/icons/external';
 import type { ProjectLinks as Links } from '@/content/projects';
 
-const LINK_TYPES: { key: keyof Links; label: string; Icon: () => React.JSX.Element; className?: string }[] = [
+const LINK_TYPES: {
+  key: keyof Links;
+  label: string;
+  Icon: () => React.JSX.Element;
+  className?: string;
+}[] = [
   { key: 'github', label: 'GitHub', Icon: IconGitHub },
   { key: 'appStore', label: 'the App Store', Icon: IconAppStore },
   { key: 'playStore', label: 'Google Play', Icon: IconPlayStore },

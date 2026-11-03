@@ -1,0 +1,441 @@
+// The room around you, in texel units: one P unit is 360px here, and the camera's own
+// translation is applied at the same scale, so the room and the windows (in true P units) line
+// up exactly. Planes stay small enough to rasterise cheaply. Day in light, evening in dark.
+@use '../_shared/scheme';
+
+@function u($n) {
+  @return $n * 360px;
+}
+
+.room {
+  // Day.
+  --sky-0: #8db7e4;
+  --sky-1: #b9d4ee;
+  --sky-2: #dce8f2;
+  --sky-3: #eef1ef;
+  --sun: #fff4da;
+  --hill-0: #b9c8d4;
+  --hill-1: #a7b8ab;
+  --hill-2: #93a893;
+  --city-warm: #ffd38f;
+  --city-cool: #dbe9ff;
+  --city-o: 0;
+  --star-o: 0;
+  --tree-0: #7c977a;
+  --tree-1: #6b876a;
+
+  --wall: #efe9e1;
+  --wall-l: #ece5dc;
+  --wall-r: #e5ded4;
+  --ao: rgba(84, 62, 40, 0.1);
+  --ceiling: #f4f1ec;
+  --floor: #cfb592;
+  --floor-2: #c4a985;
+  --seam: rgba(96, 66, 34, 0.2);
+  --floor-sheen: rgba(255, 251, 242, 0.55);
+  --rug: #ebe4d8;
+  --rug-edge: #ddd3c4;
+  --frame: #2a2c30;
+  --pane-glint: rgba(255, 255, 255, 0.1);
+  --reveal: #e6e0d6;
+  --sill: #f3efe9;
+  --patch: rgba(255, 246, 220, 0.62);
+  --patch-blur: 5px;
+  --pool: rgba(255, 190, 110, 0);
+  --glow: rgba(255, 196, 128, 0);
+  --wall-light: rgba(255, 249, 235, 0.55);
+  --downlight: rgba(255, 255, 255, 0.5);
+  --downlight-glow: rgba(255, 245, 225, 0);
+  --leaf-0: #5d7d58;
+  --leaf-1: #6e9367;
+  --stem: #4e6a49;
+  --pot: #d7cfc3;
+  --pot-rim: #cbc1b3;
+  --lamp-leg: #3a3a3c;
+  --shade: #f2ece1;
+  --shade-glow: none;
+  --art-frame: #2d2e33;
+  --art-ground: #f4f0e9;
+  --art-a: #e2ad88;
+  --art-b: #9ab4c8;
+  --art-line: #2d2e33;
+  --board: #d3c0a4;
+  --board-top: #e2d4be;
+  --shelf: #d8c8ae;
+  --mark: rgba(70, 50, 30, 0.26);
+
+  @include scheme.dark {
+    // Evening.
+    --sky-0: #121834;
+    --sky-1: #2a2d58;
+    --sky-2: #73496c;
+    --sky-3: #df9465;
+    --sun: #ffad78;
+    --hill-0: #2c2c4a;
+    --hill-1: #22233b;
+    --hill-2: #181a2b;
+    --city-o: 1;
+    --star-o: 1;
+    --tree-0: #141621;
+    --tree-1: #191b28;
+
+    --wall: #2a2e38;
+    --wall-l: #262a34;
+    --wall-r: #23272f;
+    --ao: rgba(0, 0, 0, 0.32);
+    --ceiling: #1e2129;
+    --floor: #2f2722;
+    --floor-2: #2a231e;
+    --seam: rgba(0, 0, 0, 0.32);
+    --floor-sheen: rgba(170, 160, 220, 0.12);
+    --rug: #343744;
+    --rug-edge: #2c2f3b;
+    --frame: #0e0f13;
+    --pane-glint: rgba(255, 255, 255, 0.04);
+    --reveal: #252932;
+    --sill: #2d313b;
+    --patch: rgba(176, 190, 255, 0.1);
+    --patch-blur: 9px;
+    --pool: rgba(255, 178, 96, 0.22);
+    --glow: rgba(255, 186, 112, 0.26);
+    --wall-light: rgba(160, 170, 230, 0.08);
+    --downlight: rgba(255, 240, 214, 0.9);
+    --downlight-glow: rgba(255, 214, 160, 0.16);
+    --leaf-0: #22322a;
+    --leaf-1: #2a3d31;
+    --stem: #1b2820;
+    --pot: #3b3d46;
+    --pot-rim: #44474f;
+    --lamp-leg: #15161a;
+    --shade: #ffd9a1;
+    --shade-glow: drop-shadow(0 0 18px rgba(255, 196, 120, 0.8));
+    --art-frame: #0f1013;
+    --art-ground: #2e313a;
+    --art-a: #b5765a;
+    --art-b: #4e6a84;
+    --art-line: #8b8f9c;
+    --board: #3b3028;
+    --board-top: #45392f;
+    --shelf: #3a3029;
+    --mark: rgba(206, 214, 255, 0.11);
+  }
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: translateZ(var(--P));
+  pointer-events: none;
+}
+
+.p {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  display: block;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.stars {
+  fill: #fff;
+  opacity: var(--star-o);
+}
+
+.moon {
+  fill: #f2eee2;
+  opacity: var(--star-o);
+}
+
+.city {
+  opacity: var(--city-o);
+}
+
+/* ---------- outside */
+
+.outside {
+  width: u(9.6);
+  height: u(3.9);
+  transform: translate3d(u(-4.8), u(-3), u(-9));
+}
+
+.trees {
+  width: u(5.4);
+  height: u(0.7);
+  transform: translate3d(u(-2.7), u(-0.05), u(-5.4));
+}
+
+/* ---------- the back wall, in four pieces around the opening */
+
+// Each piece draws its slice of one gradient, so the wall reads as a single surface.
+@mixin piece($x, $y, $w, $h) {
+  width: u($w);
+  height: u($h);
+  transform: translate3d(u($x), u($y), u(-3.2));
+  background-size: u(5.8) u(1.82);
+  background-position: u(-($x + 2.9)) u(-($y + 1.26));
+}
+
+.wall {
+  background-color: var(--wall);
+  background-image:
+    linear-gradient(to bottom, var(--ao), transparent 9%, transparent 80%, var(--ao)),
+    linear-gradient(to right, var(--ao), transparent 7%, transparent 93%, var(--ao)),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.18), transparent 60%);
+  background-repeat: no-repeat;
+}
+
+.backTop {
+  @include piece(-2.9, -1.26, 5.8, 0.312);
+}
+
+.backBottom {
+  @include piece(-2.9, 0.238, 5.8, 0.322);
+}
+
+.backLeft {
+  @include piece(-2.9, -0.952, 1.402, 1.194);
+}
+
+.backRight {
+  @include piece(1.498, -0.952, 1.402, 1.194);
+}
+
+.reveal {
+  background: linear-gradient(to right, var(--reveal), color-mix(in srgb, var(--reveal), #000 8%));
+}
+
+.revealLeft {
+  width: u(0.22);
+  height: u(1.19);
+  transform: translate3d(u(-1.5), u(-0.95), u(-3.2)) rotateY(90deg);
+}
+
+.revealRight {
+  width: u(0.22);
+  height: u(1.19);
+  transform: translate3d(u(1.5), u(-0.95), u(-3.42)) rotateY(-90deg);
+}
+
+.revealTop {
+  width: u(3);
+  height: u(0.22);
+  transform: translate3d(u(-1.5), u(-0.95), u(-3.42)) rotateX(90deg);
+  background: color-mix(in srgb, var(--reveal), #000 10%);
+}
+
+.sill {
+  width: u(3.16);
+  height: u(0.34);
+  transform: translate3d(u(-1.58), u(0.24), u(-3.42)) rotateX(90deg);
+  background: linear-gradient(to bottom, var(--sill), color-mix(in srgb, var(--sill), #fff 12%));
+}
+
+.mullions {
+  width: u(3);
+  height: u(1.19);
+  transform: translate3d(u(-1.5), u(-0.95), u(-3.36));
+}
+
+/* ---------- floor and ceiling */
+
+.floor {
+  width: u(5.8);
+  height: u(5);
+  transform: translate3d(u(-2.9), u(0.56), u(-3.2)) rotateX(90deg);
+  background-color: var(--floor);
+  background-image:
+    radial-gradient(ellipse 60% 34% at 50% 0%, var(--floor-sheen), transparent 70%),
+    linear-gradient(to bottom, var(--ao), transparent 4%),
+    linear-gradient(to right, var(--ao), transparent 4%, transparent 96%, var(--ao)),
+    repeating-linear-gradient(90deg, transparent 0 u(0.158), var(--seam) u(0.158) u(0.16)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 u(0.32),
+      var(--floor-2) u(0.32) u(0.48),
+      transparent u(0.48) u(0.8)
+    ),
+    repeating-linear-gradient(0deg, transparent 0 u(1.21), var(--seam) u(1.21) u(1.214));
+  overflow: hidden;
+}
+
+.sunPatch {
+  position: absolute;
+  left: u(0.9);
+  top: 0;
+  width: u(3.3);
+  height: u(1.7);
+  background:
+    repeating-linear-gradient(97deg, transparent 0 31.5%, rgba(0, 0, 0, 0.06) 31.5% 33.3%),
+    linear-gradient(to bottom, var(--patch), transparent);
+  clip-path: polygon(18% 0, 99% 0, 80% 100%, 0 100%);
+  filter: blur(var(--patch-blur));
+}
+
+.rug {
+  position: absolute;
+  left: u(1.6);
+  top: u(0.42);
+  width: u(2.6);
+  height: u(0.95);
+  border-radius: u(0.06);
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.08), transparent 70%), var(--rug);
+  box-shadow:
+    inset 0 0 0 u(0.05) var(--rug),
+    inset 0 0 0 u(0.058) var(--rug-edge),
+    0 u(0.012) u(0.03) rgba(0, 0, 0, 0.08);
+}
+
+.lampPool {
+  position: absolute;
+  left: u(4.2);
+  top: u(0);
+  width: u(2.2);
+  height: u(1.6);
+  background: radial-gradient(closest-side, var(--pool), transparent);
+}
+
+.ceiling {
+  width: u(5.8);
+  height: u(5);
+  transform: translate3d(u(-2.9), u(-1.26), u(-3.2)) rotateX(90deg);
+  background-color: var(--ceiling);
+  background-image:
+    linear-gradient(to bottom, var(--ao), transparent 5%),
+    linear-gradient(to right, var(--ao), transparent 5%, transparent 95%, var(--ao));
+}
+
+.downlight {
+  position: absolute;
+  top: u(1.6);
+  width: u(0.09);
+  height: u(0.09);
+  margin-left: u(-0.045);
+  border-radius: 50%;
+  background: var(--downlight);
+  box-shadow: 0 0 u(0.3) u(0.18) var(--downlight-glow);
+}
+
+/* ---------- side walls */
+
+.leftWall,
+.rightWall {
+  width: u(5);
+  height: u(1.82);
+  background-image:
+    linear-gradient(to bottom, var(--ao), transparent 9%, transparent 80%, var(--ao)),
+    linear-gradient(to right, var(--ao), transparent 5%, transparent 95%, var(--ao));
+  overflow: hidden;
+}
+
+.leftWall {
+  transform: translate3d(u(-2.9), u(-1.26), u(1.8)) rotateY(90deg);
+  background-color: var(--wall-l);
+}
+
+.rightWall {
+  transform: translate3d(u(2.9), u(-1.26), u(-3.2)) rotateY(-90deg);
+  background-color: var(--wall-r);
+}
+
+// The light from the window, washing the left wall near the back.
+.wallLight {
+  position: absolute;
+  right: 0;
+  top: u(0.1);
+  width: u(2.6);
+  height: u(1.6);
+  background: radial-gradient(ellipse at 100% 45%, var(--wall-light), transparent 70%);
+}
+
+// The floor lamp's warm wash on the right wall, in the evening.
+.lampGlow {
+  position: absolute;
+  left: u(-0.6);
+  top: u(-0.4);
+  width: u(2.4);
+  height: u(2.4);
+  background: radial-gradient(closest-side, var(--glow), transparent);
+}
+
+.art {
+  width: u(2.2);
+  height: u(1.5);
+  transform: translate3d(u(-2.885), u(-0.76), u(-1.15)) rotateY(90deg) scale(0.5);
+}
+
+.boardFront {
+  width: u(1.9);
+  height: u(0.3);
+  transform: translate3d(u(-2.58), u(0.26), u(-0.5)) rotateY(90deg);
+  background:
+    linear-gradient(
+      to right,
+      transparent 33%,
+      rgba(0, 0, 0, 0.08) 33.2% 33.5%,
+      transparent 33.7% 66.5%,
+      rgba(0, 0, 0, 0.08) 66.7% 67%,
+      transparent 67.2%
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.08)), var(--board);
+}
+
+.boardTop {
+  width: u(0.32);
+  height: u(1.9);
+  transform: translate3d(u(-2.9), u(0.26), u(-2.4)) rotateX(90deg);
+  background: var(--board-top);
+}
+
+.shelf {
+  width: u(1.2);
+  height: u(0.045);
+  transform: translate3d(u(2.7), u(-0.28), u(-1.9)) rotateY(-90deg);
+  background: var(--shelf);
+  box-shadow: 0 u(0.05) u(0.06) rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- furniture, as billboards drawn at twice the size for crisp edges */
+
+.plant {
+  width: u(1.24);
+  height: u(2.12);
+  transform: translate3d(u(-2.58), u(-0.5), u(-2.72)) scale(0.5);
+}
+
+.lamp {
+  width: u(0.84);
+  height: u(2.1);
+  transform: translate3d(u(2.06), u(-0.49), u(-2.6)) scale(0.5);
+}
+
+.shade {
+  fill: var(--shade);
+  filter: var(--shade-glow);
+}
+
+.shadeLip {
+  fill: color-mix(in srgb, var(--shade), #000 12%);
+}
+
+/* ---------- what the windows leave on the floor */
+
+.mark {
+  background: radial-gradient(closest-side, var(--mark), transparent);
+  transition:
+    opacity 0.5s ease,
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+// While a window is dragged its mark follows the pointer exactly.
+:global([data-dragging]) .mark {
+  transition: opacity 0.5s ease;
+}

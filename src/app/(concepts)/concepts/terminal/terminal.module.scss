@@ -1,0 +1,396 @@
+// Concept T · Terminal. Layout: a full-height tmux session, then a man page. Dark by default;
+// light follows the system, or the toggle (see _shared/_scheme.scss).
+@use '../_shared/scheme';
+
+// A light terminal theme in the GitHub Light family: white panes on a pale grey session, the
+// same ANSI hues darkened to read on white.
+@mixin light-tokens {
+  --bg: #f0f3f6;
+  --pane: #ffffff;
+  --bd: #d0d7de;
+  --bd-on: #0969da;
+  --bar: #e1e7ed;
+  --fg: #2f363d;
+  --hi: #0d1117;
+  --dim: #59636e;
+  --blue: #0969da;
+  --yel: #8a5c00;
+  --grn: #1a7f37;
+  --mag: #8250df;
+  --red: #cf222e;
+  --cyn: #1b7c83;
+}
+
+.root {
+  --bg: #0b0e13;
+  --pane: #10141b;
+  --bd: #232b37;
+  --bd-on: #6cb6ff;
+  // The tmux status line, and bold text in the man page.
+  --bar: #1a2130;
+  --fg: #c6ced8;
+  --hi: #e6edf3;
+  --dim: #687486;
+  --blue: #6cb6ff;
+  --yel: #e5c07b;
+  --grn: #8ddb8c;
+  --mag: #d2a8ff;
+  --red: #f47067;
+  --cyn: #56d4dd;
+
+  @include scheme.light {
+    @include light-tokens;
+  }
+  --mono: var(--font-jetbrains), ui-monospace, Menlo, monospace;
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font: 13px/1.55 var(--mono);
+
+  a {
+    color: var(--blue);
+    text-underline-offset: 2px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--yel);
+    outline-offset: 2px;
+  }
+
+  // ANSI colors for markup produced by the shell
+  :global(.d) {
+    color: var(--dim);
+  }
+
+  :global(.b) {
+    color: var(--blue);
+  }
+
+  :global(.y) {
+    color: var(--yel);
+  }
+
+  :global(.g) {
+    color: var(--grn);
+  }
+
+  :global(.m) {
+    color: var(--mag);
+  }
+
+  :global(.r) {
+    color: var(--red);
+  }
+
+  :global(.c) {
+    color: var(--cyn);
+  }
+
+  :global(.hdr) {
+    background: var(--grn);
+    color: var(--bg);
+  }
+}
+
+// The page behind the root (overscroll) matches it.
+:global(body):has(.root) {
+  background: #0b0e13;
+
+  @include scheme.light {
+    background: #f0f3f6;
+  }
+}
+
+/* ---------- session ---------- */
+.session {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100vh;
+  min-height: 640px;
+  padding: 10px;
+
+  @media (max-width: 820px) {
+    height: auto;
+  }
+}
+
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  grid-template-rows: minmax(0, 1.06fr) minmax(0, 0.94fr);
+  gap: 8px;
+  min-height: 0;
+
+  @media (max-width: 820px) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+}
+
+.pane {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  padding: 26px 14px 10px;
+  overflow: hidden;
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  background: var(--pane);
+
+  pre {
+    margin: 0;
+    font: inherit;
+    white-space: pre-wrap;
+  }
+
+  @media (max-width: 820px) {
+    max-height: 420px;
+  }
+}
+
+.active {
+  border-color: var(--bd-on);
+}
+
+.paneTitle {
+  position: absolute;
+  left: 12px;
+  top: 5px;
+  color: var(--dim);
+  font-size: 11px;
+
+  b {
+    color: var(--fg);
+    font-weight: 600;
+  }
+}
+
+.boot {
+  grid-column: 1;
+  grid-row: 1;
+  overflow: auto;
+
+  @media (max-width: 820px) {
+    grid-row: auto;
+  }
+}
+
+.bootLine {
+  display: block;
+}
+
+.whoami {
+  margin: 6px 0 0;
+  color: var(--yel);
+  font: 700 clamp(28px, 3.6vw, 44px) / 1.1 var(--mono);
+  letter-spacing: -0.02em;
+}
+
+.whoamiSub {
+  margin: 4px 0 0;
+  max-width: 60ch;
+}
+
+.top {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 12px;
+
+  @media (max-width: 820px) {
+    grid-column: 1;
+    grid-row: auto;
+    overflow-x: auto;
+
+    pre {
+      white-space: pre;
+    }
+  }
+}
+
+.shell {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  cursor: text;
+
+  @media (max-width: 820px) {
+    grid-row: auto;
+    height: 360px;
+  }
+}
+
+.out {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.prompt {
+  display: flex;
+  gap: 8px;
+
+  input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--fg);
+    caret-color: var(--grn);
+    outline: none;
+  }
+}
+
+.tail {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 12px;
+
+  @media (max-width: 820px) {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 26px;
+  padding-right: 12px;
+  border-radius: 4px;
+  background: var(--bar);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+
+  // Full height, the status line sits along the bottom edge: keep the clock out of the theme
+  // switcher's corner. The bar itself runs on under it, as tmux's would.
+  @media (min-width: 821px) {
+    padding-right: calc(var(--switcher-room-x) - 10px);
+  }
+}
+
+.sess {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px;
+  border-radius: 4px 0 0 4px;
+  background: var(--blue);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.wins {
+  display: flex;
+  flex: 1;
+
+  // Beside the switcher the windows give way before the clock does.
+  @media (min-width: 821px) {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  a,
+  span {
+    padding: 0 9px;
+    color: var(--dim);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--fg);
+  }
+}
+
+.cur {
+  color: var(--yel) !important;
+}
+
+/* ---------- man page ---------- */
+.man {
+  max-width: 92ch;
+  margin: 0 auto;
+  padding: 72px max(16px, 3vw) 120px;
+  font-size: 15px;
+  line-height: 1.65;
+  scroll-margin-top: 16px;
+
+  p {
+    margin: 0 0 12px;
+  }
+
+  b {
+    color: var(--hi);
+  }
+
+  u {
+    text-decoration-color: var(--dim);
+    text-underline-offset: 3px;
+  }
+}
+
+.manHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 36px;
+  color: var(--dim);
+
+  &:last-child {
+    margin: 48px 0 0;
+  }
+}
+
+.manSection {
+  margin-bottom: 30px;
+  scroll-margin-top: 16px;
+
+  h2 {
+    margin: 0 0 8px;
+    color: var(--hi);
+    font: 700 15px var(--mono);
+  }
+}
+
+.manBody {
+  padding-left: 7ch;
+
+  @media (max-width: 640px) {
+    padding-left: 2ch;
+  }
+}
+
+.entry {
+  margin-bottom: 18px;
+
+  ul {
+    margin: 0;
+    padding-left: 3ch;
+  }
+
+  li {
+    margin-bottom: 4px;
+  }
+}
+
+.entryHead {
+  margin-bottom: 4px !important;
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}

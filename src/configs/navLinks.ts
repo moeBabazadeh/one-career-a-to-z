@@ -3,22 +3,22 @@ import { createRef } from 'react';
 export const navLinks = [
   {
     name: 'About',
-    url: '/#about',
+    url: '/classic#about',
     nodeRef: createRef<HTMLLIElement>(),
   },
   {
     name: 'Experience',
-    url: '/#jobs',
+    url: '/classic#jobs',
     nodeRef: createRef<HTMLLIElement>(),
   },
   {
     name: 'Work',
-    url: '/#projects',
+    url: '/classic#projects',
     nodeRef: createRef<HTMLLIElement>(),
   },
   {
     name: 'Contact',
-    url: '/#contact',
+    url: '/classic#contact',
     nodeRef: createRef<HTMLLIElement>(),
   },
 ];

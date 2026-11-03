@@ -12,8 +12,8 @@ const Contact = () => {
       <h2 className="title">Get In Touch</h2>
 
       <p>
-        Whether you’re building something ambitious, need a hand with a tricky platform or a piece of
-        hardware, or just want to say hi, my inbox is always open. I’ll do my best to get back to
+        Whether you’re building something ambitious, need a hand with a tricky platform or a piece
+        of hardware, or just want to say hi, my inbox is always open. I’ll do my best to get back to
         you!
       </p>
 

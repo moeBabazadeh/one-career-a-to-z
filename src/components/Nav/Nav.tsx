@@ -50,7 +50,7 @@ const Nav = () => {
               <CSSTransition classNames={fadeClass} timeout={timeout} nodeRef={logoNode}>
                 <div ref={logoNode}>
                   <div className="logo" tabIndex={-1}>
-                    <Link href="/" aria-label="home">
+                    <Link href="/classic" aria-label="home">
                       <IconLogo />
                     </Link>
                   </div>
