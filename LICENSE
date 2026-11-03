@@ -1,0 +1,24 @@
+Copyright (c) 2023-2026 Moe Babazadeh (https://babazadeh.dev). All rights reserved.
+
+This repository is public so that others can read it and learn from it. No licence to copy,
+modify or distribute it is granted, except as set out below.
+
+1. You may fork this repository and run it locally to study how it works.
+
+2. You may reuse small parts of the code (a function, a component, a technique) in your own
+   work, provided that you credit Moe Babazadeh with a visible link to https://babazadeh.dev
+   and to https://github.com/moeBabazadeh/one-career-a-to-z wherever that work is published.
+
+3. You may not publish this site, or a copy of it or of its design, as your own work.
+
+4. You may not reuse the personal content, which includes the text about Moe Babazadeh, his
+   photograph, his CV, and the product screenshots and images.
+
+The classic site (/classic and /archive) is based on Brittany Chiang's v4 design
+(https://brittanychiang.com, https://github.com/bchiang7/v4). The credit for that design is hers.
+
+For any other use, ask first: moe@babazadeh.dev.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT
+SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR ITS USE.
