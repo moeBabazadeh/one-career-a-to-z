@@ -2,7 +2,7 @@
 
 The personal site of **Moe Babazadeh**, CTO at Neuroject: one career, told through 26 themes. Each theme is the whole site, built as a different working tool: an API reference, an oscilloscope, a pull request, a Linux desktop with a desktop cube, a RoboCup simulator, a reverse-engineering suite, and more.
 
-**[babazadeh.dev](https://babazadeh.dev)** opens one of the favourites at random. Use the switcher in the bottom-right corner to move between themes, or browse them all in the **[gallery](https://babazadeh.dev/concepts)**.
+**[babazadeh.dev](https://babazadeh.dev)** opens on [Circuit Board](https://babazadeh.dev/concepts/circuit-board), the theme that reads most like a plain page. Use the switcher in the bottom-right corner to move between themes, or browse them all in the **[gallery](https://babazadeh.dev/concepts)**.
 
 ![The 26 themes, A to Z](.github/readme/themes.jpg)
 
@@ -24,7 +24,7 @@ Nineteen earlier designs live on in the gallery's **Bonus** section. The origina
 
 - **One source of facts.** Every date, figure, role and link lives in [`src/content/db.ts`](src/content/db.ts). Each theme reads from it, so a change made there shows up everywhere. An ESLint rule fails the build if a fact is typed straight into a theme.
 - **Real tools, not mock-ups.** The themes run on real mechanisms: a formula engine with dependency tracking, a small Python interpreter, a Thumb-2 assembler and disassembler, packet and protocol decoders, a PID-controlled plant, robot and physics simulations.
-- **One registry.** [`_shared/concepts.ts`](<src/app/(concepts)/concepts/_shared/concepts.ts>) lists every theme. It drives the switcher, the gallery, the random start and the bonus section.
+- **One registry.** [`_shared/concepts.ts`](<src/app/(concepts)/concepts/_shared/concepts.ts>) lists every theme. It drives the switcher, the gallery, the shuffle and the bonus section.
 - **Light and dark everywhere.** The scheme follows the system unless the visitor picks one, and it's applied before the first paint, so pages don't flash.
 - **Shareable.** Every theme has its own address, title, description and share image.
 
@@ -56,7 +56,7 @@ No environment variables are required. [`.env.example`](.env.example) lists the 
 src/
 ├── app/
 │   ├── (concepts)/
-│   │   ├── route.ts            / → a random favourite, or the visitor's pinned theme
+│   │   ├── route.ts            / → the default theme, or the visitor's pinned one
 │   │   ├── layout.tsx          fonts, light and dark, the switcher
 │   │   └── concepts/
 │   │       ├── page.tsx        the gallery (/concepts)

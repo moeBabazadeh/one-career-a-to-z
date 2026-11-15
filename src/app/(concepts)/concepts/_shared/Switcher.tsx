@@ -25,6 +25,7 @@ import {
   DEALT_COOKIE,
   RANDOM,
   clearCookie,
+  defaultTheme,
   randomTheme,
   readCookie,
   readPin,
@@ -309,9 +310,9 @@ export default function Switcher() {
                 type="button"
                 aria-pressed={pin === null}
                 onClick={() => writePin(null)}
-                title={`One of ${topPicks.length} top picks, at random`}
+                title={`${conceptTitle(defaultTheme.slug)}, the theme the site opens on`}
               >
-                <StarIcon /> Top picks
+                <HomeIcon /> Default
               </button>
               <button type="button" aria-pressed={pin === RANDOM} onClick={() => writePin(RANDOM)}>
                 <Dice /> Surprise me
@@ -485,10 +486,10 @@ function MonitorIcon() {
   );
 }
 
-function StarIcon() {
+function HomeIcon() {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true">
-      <path d="m8 2.2 1.75 3.6 3.95.55-2.87 2.77.7 3.93L8 11.17l-3.53 1.88.7-3.93L2.3 6.35l3.95-.55L8 2.2Z" />
+      <path d="M2.5 7.3 8 2.5l5.5 4.8v6.2h-3.6V9.6H6.1v3.9H2.5V7.3Z" />
     </svg>
   );
 }
