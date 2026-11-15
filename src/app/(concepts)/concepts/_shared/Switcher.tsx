@@ -25,6 +25,7 @@ import {
   DEALT_COOKIE,
   RANDOM,
   clearCookie,
+  defaultTheme,
   randomTheme,
   readCookie,
   readPin,
@@ -53,9 +54,10 @@ const colors = (c: Concept) => ({ '--bg': c.palette[0], '--fg': c.palette[1] }) 
 /**
  * The theme picker, in the same bottom-right spot on every concept: step through A–Z, shuffle,
  * open the grid of all of them (bonus themes listed under it), or flip light and dark. Pages with fixed UI along the bottom
- * keep out of its corner (see --switcher-room-x/y in concepts.css).
+ * keep out of its corner (see --switcher-room-x/y in concepts.css). `blog` says whether the blog
+ * has anything to read yet, and so whether to link to it.
  */
-export default function Switcher() {
+export default function Switcher({ blog }: { blog: boolean }) {
   const path = usePathname();
   const router = useRouter();
   const panelId = useId();
@@ -157,6 +159,9 @@ export default function Switcher() {
     tiles[to]?.focus();
   };
 
+  // The blog is for reading: it has its own header and light and dark toggle, and no floating pill.
+  if (path?.startsWith('/blog')) return null;
+
   return (
     <div ref={root} className={s.root} data-open={open || undefined}>
       {hint && current && (
@@ -202,6 +207,11 @@ export default function Switcher() {
               <Link href="/classic" onClick={close} className={s.headLink}>
                 Classic site
               </Link>
+              {blog && (
+                <Link href="/blog" onClick={close} className={s.headLink}>
+                  Blog
+                </Link>
+              )}
             </nav>
           </header>
 
@@ -309,9 +319,9 @@ export default function Switcher() {
                 type="button"
                 aria-pressed={pin === null}
                 onClick={() => writePin(null)}
-                title={`One of ${topPicks.length} top picks, at random`}
+                title={`${conceptTitle(defaultTheme.slug)}, the theme the site opens on`}
               >
-                <StarIcon /> Top picks
+                <HomeIcon /> Default
               </button>
               <button type="button" aria-pressed={pin === RANDOM} onClick={() => writePin(RANDOM)}>
                 <Dice /> Surprise me
@@ -485,10 +495,10 @@ function MonitorIcon() {
   );
 }
 
-function StarIcon() {
+function HomeIcon() {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true">
-      <path d="m8 2.2 1.75 3.6 3.95.55-2.87 2.77.7 3.93L8 11.17l-3.53 1.88.7-3.93L2.3 6.35l3.95-.55L8 2.2Z" />
+      <path d="M2.5 7.3 8 2.5l5.5 4.8v6.2h-3.6V9.6H6.1v3.9H2.5V7.3Z" />
     </svg>
   );
 }

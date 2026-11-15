@@ -1,3 +1,12 @@
+## 4.1.0 (15 Nov 2026)
+
+- Add a blog at /blog, with topic pages, an RSS feed and a share image for every post
+- Publish the first two posts: "I built my website 26 times" and "Hello world, again"
+- Add reading time, a contents list, copy buttons on code blocks and links to newer and older posts
+- Link to the blog from the theme switcher and the Circuit Board menu
+- Open the site on Circuit Board instead of a random favourite
+- Run the dev server on port 3100
+
 ## 4.0.0 (3 Nov 2026)
 
 - Redesign as 26 themes, A to Z, each built as a working tool, plus 19 bonus themes

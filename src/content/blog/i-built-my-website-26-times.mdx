@@ -1,0 +1,50 @@
+export const metadata = {
+  title: 'I built my website 26 times',
+  description:
+    'One career, told 26 different ways: a theme for every letter, each one a working tool. The idea, and the one rule that keeps all of them telling the same story.',
+  date: '2026-11-15',
+  topic: 'side-projects',
+};
+
+A weekend at the end of the month, lots of tokens to spare, and a strange idea: one career, told 26 different ways. So I built my website 26 times.
+
+Every theme on [babazadeh.dev](/) is the whole site. The roles, the products, the hardware and the open-source work are the same in each one, but the page around them is a different working tool. There is one for every letter, from an [API reference](/concepts/api-reference) to a [zoom through the full stack](/concepts/zoom), and the [gallery](/concepts) lists them all.
+
+## Real tools, not mock-ups
+
+The bar for a theme was that it has to work:
+
+- [Pull Request](/concepts/pull-request) is the site as a pull request. You read the diff, watch CI run, leave a review, then merge.
+- [Query Plan](/concepts/query-plan) is the career as a database. You write SQL against it and watch `EXPLAIN ANALYZE` stream rows through the plan.
+- [Kickoff](/concepts/kickoff) plays a Small Size League match live, and the career reads like a match report.
+
+## One source of facts
+
+Twenty-six designs means twenty-six places for a date or a number to go stale. So every fact lives in one file, `src/content/db.ts`, and every theme reads from it. A lint rule fails the build when a fact is typed straight into a theme:
+
+```js title="eslint.config.mjs" {2,4}
+const FACTS = [
+  // A month and a year: "Sep 2026", "June 2024".
+  String.raw`\b(January|February|…|Nov|Dec) (19|20)\d\d\b`,
+  // A lower bound: "200+", "0.5B+", "11.8k+".
+  String.raw`\b\d[\d.,]*[kKMB]?\+`,
+];
+```
+
+Changing a job title or a commit count is now a one-line edit, and all 26 themes pick it up.
+
+## What it is built with
+
+| Part      | Choice                                    |
+| --------- | ----------------------------------------- |
+| Framework | Next.js 16 with the App Router, React 19  |
+| Language  | TypeScript                                |
+| Styling   | Sass modules, light and dark on each page |
+| 3D themes | three.js                                  |
+| Hosting   | Vercel                                    |
+
+## Have a look
+
+Not every idea made the A to Z set. Nineteen earlier designs are still in the gallery's Bonus section, and each of them still works as the whole site.
+
+The code is public at [github.com/moeBabazadeh/one-career-a-to-z](https://github.com/moeBabazadeh/one-career-a-to-z). You're welcome to read it and use it as inspiration.
