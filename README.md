@@ -38,7 +38,7 @@ You need Node.js 24 (see [`.nvmrc`](.nvmrc)) and pnpm (the version is pinned in 
 
 ```sh
 pnpm install
-pnpm dev        # http://localhost:3000
+pnpm dev        # http://localhost:3100
 ```
 
 | Command          | What it does                                |
