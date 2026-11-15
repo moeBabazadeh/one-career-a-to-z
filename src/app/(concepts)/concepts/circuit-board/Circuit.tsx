@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useId } from 'react';
 import {
   about,
@@ -394,7 +395,8 @@ function Zone({
   );
 }
 
-export default function Circuit() {
+/** `blog` says whether the blog has anything to read yet, and so whether the header links to it. */
+export default function Circuit({ blog }: { blog: boolean }) {
   return (
     <div className={s.root}>
       <header className={s.top}>
@@ -409,6 +411,7 @@ export default function Circuit() {
           <a href="#hardware">M1 Hardware</a>
           <a href="#oss">TP Open source</a>
           <a href="#contact">J5 Contact</a>
+          {blog && <Link href="/blog">J6 Blog</Link>}
         </nav>
       </header>
 

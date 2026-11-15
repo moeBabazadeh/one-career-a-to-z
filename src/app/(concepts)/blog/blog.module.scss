@@ -1,0 +1,1289 @@
+@use '../concepts/_shared/scheme';
+
+// The blog: one readable layout outside the themes, in the gallery's colours and the wordmark's
+// typeface. Posts are cards with covers, and the covers are the share images (Cover.tsx). Light is
+// the base; dark goes in the scheme mixin, as everywhere else.
+
+.root {
+  --bg: #f5f5f2;
+  --ink: #15181d;
+  --muted: #535b66;
+  // Dates and labels are small, so this grey keeps 4.5:1 on the page (#6b7480 was 4.3:1).
+  --dim: #5f6873;
+  --line: #dddcd5;
+  --line-strong: #c9c8c0;
+  --surface: #ffffff;
+  --tint: rgba(21, 24, 29, 0.07);
+  --mark: rgba(255, 95, 109, 0.14);
+  --shadow: 0 18px 34px -22px rgba(21, 24, 29, 0.45);
+  // The covers' ground, as on the share images (look.ts).
+  --tile: #111214;
+  // The wordmark's coral, and a deeper one that still reads as text on the page.
+  --accent: #ff5f6d;
+  --accent-ink: #c8303f;
+  --focus: #15181d;
+  --sans: var(--font-inter), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: var(--font-jetbrains), ui-monospace, 'SF Mono', Menlo, monospace;
+
+  @include scheme.dark {
+    --bg: #0c0e12;
+    --ink: #e7ebf0;
+    --muted: #a3adb9;
+    --dim: #8b96a3;
+    --line: #262c35;
+    --line-strong: #3a424e;
+    --surface: #13161c;
+    --tint: rgba(231, 235, 240, 0.1);
+    --mark: rgba(255, 95, 109, 0.18);
+    --shadow: 0 18px 34px -22px rgba(0, 0, 0, 0.9);
+    --tile: #181b22;
+    --accent-ink: #ff8a94;
+    --focus: #ffffff;
+  }
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 17px/1.65 var(--sans);
+
+  a {
+    color: inherit;
+
+    &:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+  }
+}
+
+:global(body):has(.root) {
+  background: #f5f5f2;
+
+  @include scheme.dark {
+    background: #0c0e12;
+  }
+}
+
+/* ------------------------------------------------------------------ chrome */
+
+.top,
+.page,
+.foot {
+  width: 100%;
+  max-width: 1168px;
+  margin: 0 auto;
+  padding-inline: 24px;
+
+  @media (max-width: 559px) {
+    padding-inline: 20px;
+  }
+
+  // The smallest phones: just enough room for the wordmark, four links and the toggle on one line.
+  @media (max-width: 359px) {
+    padding-inline: 16px;
+  }
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 72px;
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 3.6vw, 22px);
+    font-size: 15px;
+    font-weight: 500;
+
+    @media (max-width: 359px) {
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    a {
+      color: var(--muted);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--ink);
+      }
+    }
+  }
+}
+
+.brand {
+  font: 800 27px/1 var(--sans);
+  letter-spacing: -0.045em;
+  text-decoration: none;
+
+  i {
+    color: var(--accent);
+    font-style: normal;
+  }
+}
+
+.scheme {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ink);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  // The moon offers dark while the page is light, and the sun the other way round.
+  .sun {
+    display: none;
+  }
+
+  @include scheme.dark {
+    .moon {
+      display: none;
+    }
+
+    .sun {
+      display: block;
+    }
+  }
+}
+
+.page {
+  flex: 1;
+  padding-top: clamp(28px, 6vw, 52px);
+  padding-bottom: 88px;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 24px;
+  padding-top: 26px;
+  padding-bottom: 44px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 15px;
+
+  p {
+    margin: 0;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  a {
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: var(--ink);
+      text-decoration-color: var(--accent);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ shared pieces */
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin: 0;
+  color: var(--dim);
+  font: 500 13px/1.4 var(--mono);
+  letter-spacing: 0.01em;
+}
+
+.draft {
+  margin-left: 2px;
+  padding: 2px 8px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent-ink);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+// A small line above a title: "Latest · Side projects", or a post's topic.
+.kicker {
+  margin: 0;
+  color: var(--accent-ink);
+  font: 500 12.5px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+}
+
+// A heading for a group: "Earlier posts", "On this page".
+.label {
+  margin: 0;
+  color: var(--dim);
+  font: 500 12.5px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+// There for screen readers only.
+.hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// Pill links: RSS and LinkedIn, topics, sharing.
+%pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font: 500 15px/1.2 var(--sans);
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+}
+
+.follow,
+.followDark {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+
+  a {
+    @extend %pill;
+  }
+}
+
+// On the list: the feed outlined, LinkedIn filled.
+.follow a:last-child {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+
+  &:hover {
+    color: var(--bg);
+    opacity: 0.88;
+  }
+}
+
+// On the dark box under a post.
+.followDark a {
+  border-color: #3a3f47;
+  background: none;
+  color: #ffffff;
+
+  &:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  &:last-child {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #15181d;
+    font-weight: 600;
+
+    &:hover {
+      color: #15181d;
+      opacity: 0.9;
+    }
+  }
+
+  &:focus-visible {
+    outline-color: #ffffff;
+  }
+}
+
+/* ------------------------------------------------------------------ covers */
+
+// The share image in HTML (Cover.tsx). Sizes inside are in cqi, hundredths of the cover's width,
+// so it scales like an image: 1cqi is 12px on the 1200-wide card.
+.cover {
+  container-type: inline-size;
+  background: var(--tile);
+  color: #ffffff;
+}
+
+.coverLarge,
+.coverSmall {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2cqi;
+  box-sizing: border-box;
+  aspect-ratio: 1200 / 630;
+}
+
+.coverLarge {
+  padding: 5.33cqi 6cqi;
+}
+
+.coverSmall {
+  padding: 5.5cqi 6.5cqi;
+}
+
+.coverTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin: 0;
+  color: #a3adb9;
+  font: 500 max(11px, 2.33cqi) / 1.2 var(--sans);
+}
+
+.coverMark {
+  color: #ffffff;
+  font: 800 max(18px, 4.17cqi) / 1 var(--sans);
+  letter-spacing: -0.04em;
+
+  i {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .coverSmall & {
+    font-size: max(17px, 5.4cqi);
+  }
+}
+
+.coverTitle {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.coverLine {
+  margin: 2.33cqi 0 0;
+  color: #a3adb9;
+  font: 500 max(11px, 2.33cqi) / 1.3 var(--sans);
+
+  .coverSmall & {
+    margin: 0;
+    font: 500 13px/1.3 var(--mono);
+  }
+}
+
+/* ------------------------------------------------------------------ the list of posts */
+
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 24px;
+
+  > div {
+    flex: 1 1 420px;
+  }
+
+  h1 {
+    margin: 0;
+    font: 800 clamp(42px, 9vw, 64px) / 1 var(--sans);
+    letter-spacing: -0.04em;
+  }
+
+  > div > p:not(.meta) {
+    max-width: 46ch;
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 19px;
+  }
+
+  // "Page 2 of 5", above the title on every page but the first.
+  .meta {
+    margin-bottom: 14px;
+  }
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 32px;
+
+  a {
+    @extend %pill;
+
+    &[aria-current] {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+    }
+  }
+}
+
+// The newest post and the cards after it: the whole card is its title's link.
+.featured,
+.card {
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  overflow: hidden;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+
+  h2,
+  h3 {
+    margin: 0;
+    text-wrap: balance;
+    transition: color 0.18s ease;
+  }
+
+  // The summary, in the text beside or under the cover (the cover keeps its own colours).
+  > div:last-child p:not(.meta, .kicker) {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      box-shadow: var(--shadow);
+
+      h2,
+      h3 {
+        color: var(--accent-ink);
+      }
+    }
+  }
+
+  &:has(.stretch:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+}
+
+.stretch {
+  text-decoration: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.featured {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  border-radius: 20px;
+
+  > .cover {
+    flex: 1 1 520px;
+  }
+
+  > div:last-child {
+    display: flex;
+    flex: 1 1 340px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    padding: clamp(22px, 4vw, 40px);
+  }
+
+  h2 {
+    font: 800 clamp(26px, 3.4vw, 34px) / 1.1 var(--sans);
+    letter-spacing: -0.03em;
+  }
+}
+
+section:has(> .cards) > .label {
+  margin: 56px 0 16px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    // Coming back from a post (/blog/page/2#its-address) stops just above it.
+    scroll-margin-top: 16px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 16px;
+
+  > div:last-child {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 22px 24px;
+  }
+
+  h3 {
+    font: 700 20px/1.25 var(--sans);
+    letter-spacing: -0.02em;
+  }
+
+  > div:last-child p:not(.meta) {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .meta {
+    margin-top: auto;
+    padding-top: 8px;
+    font-size: 12.5px;
+  }
+}
+
+// Under the list: newer on the left, older on the right, page numbers between them.
+.pager {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(40px, 6vw, 56px);
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  font: 500 14px/1 var(--mono);
+
+  a {
+    display: inline-grid;
+    place-items: center;
+    min-height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    text-decoration: none;
+
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+}
+
+.newer,
+.older {
+  padding-inline: 16px;
+}
+
+.newer {
+  justify-self: start;
+}
+
+.older {
+  justify-self: end;
+}
+
+.numbers {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li[aria-hidden] {
+    padding-inline: 4px;
+    color: var(--dim);
+  }
+
+  a {
+    min-width: 40px;
+    padding-inline: 8px;
+    border-color: transparent;
+
+    &[aria-current] {
+      border-color: var(--ink);
+      font-weight: 700;
+    }
+  }
+}
+
+.count {
+  display: none;
+  margin: 0;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+// On a phone the numbers would crowd out the arrows, so the page says where it is instead.
+@media (max-width: 559px) {
+  .numbers {
+    display: none;
+  }
+
+  .count {
+    display: block;
+  }
+
+  .pager {
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .newer,
+  .older {
+    padding-inline: 12px;
+  }
+}
+
+.empty {
+  margin: 32px 0 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ a post */
+
+.back {
+  margin: -8px 0 0;
+  font: 500 14px/1 var(--mono);
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--muted);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--ink);
+    }
+  }
+}
+
+.title {
+  max-width: 820px;
+  margin-top: 16px;
+
+  > h1 {
+    margin: 14px 0 0;
+    font: 800 clamp(36px, 7vw, 60px) / 1.02 var(--sans);
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  > p:not(.kicker) {
+    margin: 18px 0 0;
+    color: var(--muted);
+    font-size: clamp(18px, 2.6vw, 21px);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  + .cover {
+    margin-top: 40px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+}
+
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  img {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    object-fit: cover;
+  }
+
+  p:not(.meta) {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+}
+
+.share {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+
+  a {
+    @extend %pill;
+
+    color: var(--ink);
+  }
+}
+
+%icon-button {
+  cursor: pointer;
+
+  svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+.copyLink {
+  @extend %icon-button;
+
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+
+  &:hover {
+    border-color: var(--ink);
+  }
+
+  svg {
+    width: 17px;
+    height: 17px;
+    stroke-width: 1.8;
+  }
+}
+
+// The post's text, and beside it on a wide screen, its contents.
+.body,
+.withContents {
+  margin-top: clamp(36px, 6vw, 56px);
+}
+
+.body {
+  max-width: 700px;
+}
+
+.withContents {
+  display: grid;
+  grid-template-columns: minmax(0, 700px) 220px;
+  justify-content: start;
+  gap: 64px;
+
+  @media (max-width: 1079px) {
+    grid-template-columns: minmax(0, 700px);
+
+    .contents {
+      display: none;
+    }
+  }
+}
+
+.contents {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+
+  ol {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  a {
+    display: block;
+    padding: 8px 0 8px 14px;
+    border-left: 2px solid var(--line);
+    color: var(--muted);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--ink);
+    }
+
+    &[aria-current] {
+      border-left-color: var(--accent);
+      color: var(--ink);
+      font-weight: 600;
+    }
+  }
+}
+
+// Under a post: the posts either side of it, then where to hear about the next one.
+.more {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+  max-width: 984px;
+  margin-top: 72px;
+}
+
+.next {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+
+  span:first-child {
+    color: var(--dim);
+    font: 500 12.5px/1.4 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  span:last-child {
+    font: 700 20px/1.3 var(--sans);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    transition: color 0.18s ease;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      box-shadow: var(--shadow);
+
+      span:last-child {
+        color: var(--accent-ink);
+      }
+    }
+  }
+}
+
+.subscribe {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 984px;
+  margin-top: 16px;
+  padding: clamp(24px, 4vw, 32px);
+  border: 1px solid var(--tile);
+  border-radius: 20px;
+  background: var(--tile);
+  color: #ffffff;
+
+  @include scheme.dark {
+    border-color: var(--line);
+  }
+
+  > div {
+    flex: 1 1 320px;
+  }
+
+  h2 {
+    margin: 0;
+    font: 800 24px/1.2 var(--sans);
+    letter-spacing: -0.03em;
+  }
+
+  p:not(.followDark) {
+    margin: 6px 0 0;
+    color: #a3adb9;
+  }
+}
+
+// Everything a post's MDX can produce, styled by element so posts stay plain markdown.
+.prose {
+  font-size: 18px;
+  line-height: 1.72;
+  overflow-wrap: break-word;
+
+  > * {
+    margin-block: 0;
+  }
+
+  > * + * {
+    margin-top: 1.3em;
+  }
+
+  h2,
+  h3 {
+    font-family: var(--sans);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    // A link to a section (from the contents) stops just above its heading.
+    scroll-margin-top: 24px;
+  }
+
+  h2 {
+    margin-top: 2.1em;
+    font-size: clamp(24px, 4.4vw, 29px);
+    line-height: 1.2;
+  }
+
+  h3 {
+    margin-top: 1.8em;
+    font-size: clamp(19px, 3.4vw, 22px);
+    line-height: 1.3;
+  }
+
+  h2 + *,
+  h3 + * {
+    margin-top: 0.7em;
+  }
+
+  a {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: var(--accent-ink);
+    }
+  }
+
+  strong {
+    font-weight: 650;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.3em;
+
+    ul,
+    ol {
+      margin-top: 0.4em;
+    }
+  }
+
+  li + li {
+    margin-top: 0.4em;
+  }
+
+  li::marker {
+    color: var(--dim);
+  }
+
+  // GitHub-style task lists.
+  li:has(> input[type='checkbox']) {
+    list-style: none;
+    margin-left: -1.3em;
+
+    input {
+      margin: 0 0.5em 0 0;
+      accent-color: var(--accent);
+    }
+  }
+
+  blockquote {
+    margin-inline: 0;
+    padding-left: 20px;
+    border-left: 3px solid var(--accent);
+    color: var(--muted);
+
+    > * {
+      margin-block: 0;
+    }
+
+    > * + * {
+      margin-top: 0.8em;
+    }
+  }
+
+  hr {
+    height: 0;
+    margin-block: 2.4em;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+
+  // An image with a caption (see mdx-components.tsx).
+  [data-figure] {
+    display: block;
+
+    img {
+      display: block;
+    }
+  }
+
+  [data-caption] {
+    display: block;
+    margin-top: 10px;
+    color: var(--dim);
+    font-size: 15px;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  // Footnotes: a small number in the text, and the notes themselves at the end of the post.
+  sup {
+    line-height: 0;
+  }
+
+  [data-footnote-ref] {
+    padding-inline: 0.15em;
+    font: 600 0.78em var(--mono);
+    text-decoration: none;
+  }
+
+  [data-footnote-ref],
+  [data-footnotes] li {
+    scroll-margin-top: 24px;
+  }
+
+  [data-footnotes] {
+    margin-top: 3em;
+    padding-top: 1.4em;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 15.5px;
+    line-height: 1.6;
+
+    // Its "Footnotes" heading is there for screen readers; the rule above shows where notes start.
+    h2 {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    ol {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  [data-footnote-backref] {
+    margin-left: 0.3em;
+    text-decoration: none;
+  }
+
+  // A wide table scrolls inside itself; the page never scrolls sideways.
+  table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  th,
+  td {
+    padding: 9px 16px 9px 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    color: var(--dim);
+    font: 500 12.5px/1.5 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  // A right-aligned column (|---:|) holds numbers; "~25 GB" stays on one line.
+  [style*='right'] {
+    white-space: nowrap;
+  }
+
+  // Code in a sentence.
+  code {
+    padding: 0.14em 0.36em;
+    border-radius: 5px;
+    background: var(--tint);
+    font: 0.86em var(--mono);
+  }
+
+  // A code block, highlighted at build time: a box with a bar on top for its file name or
+  // language and the copy button (mdx-components.tsx). Each token carries both themes' colours as
+  // --shiki-light and --shiki-dark, and the scheme picks one.
+  figure {
+    position: relative;
+    margin-inline: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  figcaption {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    // Room on the right for the copy button.
+    padding: 0 104px 0 16px;
+    border-bottom: 1px solid var(--line);
+    color: var(--dim);
+    font: 500 12.5px/1.4 var(--mono);
+    // A long file path scrolls, like the code under it, instead of breaking mid-name.
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  pre {
+    margin: 0;
+    padding: 16px 0;
+    overflow-x: auto;
+    font: 14px/1.7 var(--mono);
+    tab-size: 2;
+
+    code {
+      display: grid;
+      min-width: max-content;
+      padding: 0;
+      border-radius: 0;
+      background: none;
+      font: inherit;
+    }
+
+    [data-line] {
+      padding: 0 18px;
+    }
+
+    // A line called out with ```ts {2}.
+    [data-highlighted-line] {
+      background: var(--mark);
+      box-shadow: inset 3px 0 0 var(--accent);
+    }
+  }
+
+  pre,
+  pre span {
+    color: var(--shiki-light);
+
+    @include scheme.dark {
+      color: var(--shiki-dark);
+    }
+  }
+}
+
+.copyCode {
+  @extend %icon-button;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 16px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: 500 12.5px/1 var(--mono);
+
+  &:hover {
+    color: var(--ink);
+  }
+
+  &:focus-visible {
+    outline-offset: -4px;
+    border-radius: 10px;
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2;
+  }
+}
