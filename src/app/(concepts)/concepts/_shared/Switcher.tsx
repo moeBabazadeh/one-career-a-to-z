@@ -54,9 +54,10 @@ const colors = (c: Concept) => ({ '--bg': c.palette[0], '--fg': c.palette[1] }) 
 /**
  * The theme picker, in the same bottom-right spot on every concept: step through A–Z, shuffle,
  * open the grid of all of them (bonus themes listed under it), or flip light and dark. Pages with fixed UI along the bottom
- * keep out of its corner (see --switcher-room-x/y in concepts.css).
+ * keep out of its corner (see --switcher-room-x/y in concepts.css). `blog` says whether the blog
+ * has anything to read yet, and so whether to link to it.
  */
-export default function Switcher() {
+export default function Switcher({ blog }: { blog: boolean }) {
   const path = usePathname();
   const router = useRouter();
   const panelId = useId();
@@ -158,6 +159,9 @@ export default function Switcher() {
     tiles[to]?.focus();
   };
 
+  // The blog is for reading: it has its own header and light and dark toggle, and no floating pill.
+  if (path?.startsWith('/blog')) return null;
+
   return (
     <div ref={root} className={s.root} data-open={open || undefined}>
       {hint && current && (
@@ -203,6 +207,11 @@ export default function Switcher() {
               <Link href="/classic" onClick={close} className={s.headLink}>
                 Classic site
               </Link>
+              {blog && (
+                <Link href="/blog" onClick={close} className={s.headLink}>
+                  Blog
+                </Link>
+              )}
             </nav>
           </header>
 

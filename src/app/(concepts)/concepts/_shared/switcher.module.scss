@@ -398,8 +398,10 @@
 
 .head {
   display: flex;
+  // On a phone the links drop to their own row instead of squeezing the title.
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px 10px;
 
   h2 {
     margin: 0;
@@ -420,6 +422,7 @@
 .headLinks {
   display: flex;
   gap: 12px;
+  white-space: nowrap;
 }
 
 .headLink {
